@@ -1,4 +1,4 @@
-# Projet Info
+# Projet Artem
 
 ## Informations: 
 C'est une application faite pour les artistes, pour emmagasiner leurs dessins,
