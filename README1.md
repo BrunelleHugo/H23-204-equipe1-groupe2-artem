@@ -27,7 +27,7 @@ Ce que l'application Artem peux offrir est une plateforme sur laquelle les utili
 Logique du code
 
 
-	Réaliser un plan de travail en équipe
-	Faire référence aux acquis 
-•	Étude de faisabilité du projet (Cerner les difficultés, évaluation du temps)
-•	Dossier d’analyse du projet
+##	Réaliser un plan de travail en équipe
+##	Faire référence aux acquis 
+##	Étude de faisabilité du projet (Cerner les difficultés, évaluation du temps)
+##	Dossier d’analyse du projet
