@@ -1,4 +1,4 @@
-# Projet Artem
+# Projet Info
 
 ## Informations: 
 C'est une application faite pour les artistes, pour emmagasiner leurs dessins,
@@ -19,3 +19,13 @@ Réalité augmenté, conversation "chat", algorithmes de compatibilité
 - Base de données
 - Compatibilité entre les comptes
 - Faire une application
+
+## Nouveauté du projet
+Ce que l'application Artem peux offrir est une plateforme sur laquelle les utilisateurs (artistes) ont la possibilité de discuter avec d'autres artistes sur leurs oeuvres. En prenant des images des pièces de leur habitacle, Artem offre des oeuvres d'art, des sculptures et autres qui fondrait bien dans le décor de l'endroit. Ces suggestions sont recueillies sur une vaste base de données afin que les besoins de l'utilisateur soit complètement satisfait.
+
+
+	Réaliser un plan de travail en équipe
+	Mettre en valeur la nouveauté dans le projet retenu
+	Faire référence aux acquis 
+•	Étude de faisabilité du projet (Cerner les difficultés, évaluation du temps)
+•	Dossier d’analyse du projet
