@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "219921092646",
+    "project_id": "artem-287a4",
+    "storage_bucket": "artem-287a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219921092646:android:9d2e0276b3448af2ee56e7",
+        "android_client_info": {
+          "package_name": "com.example.artem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219921092646-lh7lb7bg06o3l65erilfveu2q0pbvei6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3Q2GQNDUNr2s5tBkHl90tbkVvGDk5BJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219921092646-lh7lb7bg06o3l65erilfveu2q0pbvei6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
