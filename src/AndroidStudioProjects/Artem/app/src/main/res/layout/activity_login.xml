@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_color"
 
     tools:context=".LoginActivity">
 
@@ -89,7 +88,7 @@
                 android:layout_marginEnd="23dp"
                 android:text="Forget Password?"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorBlack"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
@@ -119,7 +118,7 @@
                 android:layout_marginEnd="23dp"
                 android:text="Need new Account?Sign Up Here"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorBlack"
                 android:textSize="17sp"
                 android:textStyle="bold" />
         </RelativeLayout>
