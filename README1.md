@@ -31,3 +31,5 @@ Logique du code
 ####	Faire référence aux acquis 
 ####	Étude de faisabilité du projet (Cerner les difficultés, évaluation du temps)
 ####	Dossier d’analyse du projet
+
+<img src="https://api.nga.gov/iiif/0049d6c0-be2c-4b34-a9d3-06829157d029/full/!1920,1800/0/default.jpg" alt="Italian Trulli">
