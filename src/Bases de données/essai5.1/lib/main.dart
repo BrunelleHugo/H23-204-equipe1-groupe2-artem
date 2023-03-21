@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
     var http7 = 'https://artmatch.ca/canadian-art-for-sale/';
     var http8 = 'https://www.artsy.net/artist/jean-dubuffet/works-for-sale';
     var http9 = 'https://loriginal.org/product-category/pascal-2/';
-    final response = await http.Client().get(Uri.parse(http9));
+    final response = await http.Client().get(Uri.parse(http1));
 
     // Status Code 200 means response has been received successfully
 
