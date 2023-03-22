@@ -2,19 +2,24 @@
 
 import 'dart:js_util';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
 
 
-void main() => runApp(MaterialApp(
-    theme: ThemeData(
-      accentColor: Colors.green,
-      scaffoldBackgroundColor: Colors.green[100],
-      primaryColor: Colors.green,
-    ),
-    home: MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
+  runApp(MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.green[100],
+        primaryColor: Colors.green,
+        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.green),
+      ),
+      home: MyApp()));
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({Key key}) : super(key: key);
