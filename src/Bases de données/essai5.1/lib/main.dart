@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
+
+
 void main() => runApp(MaterialApp(
     theme: ThemeData(
       accentColor: Colors.green,
@@ -32,7 +34,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<List<String>> extractData() async {
     // Getting the response from the targeted url
-    var http1 = 'http://www.saatchiart.com/account/artworks/742148?page=2';
+    var http1 = 'http://www.saatchiart.com/account/artworks/742148';
     var http2 = 'https://arttocanvas.com/shop/?tx_pa_artist=Mark%20Rothko';
     var http3 = 'https://www.artfinder.com/artist/monika-luniak';
     var http4 = 'https://www.prints.com/art.php/W_Michael_Frye/?artist_id=6448';
