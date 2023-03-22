@@ -18,7 +18,7 @@ void main() async {
         primaryColor: Colors.green,
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.green),
       ),
-      home: MyApp()));
+      home: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('GeeksForGeeks')),
+      appBar: AppBar(title: const Text('GeeksForGeeks')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -106,11 +106,11 @@ class _MyAppState extends State<MyApp> {
             // if isLoading is true show loader
             // else show Column of Texts
             isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Column(
                     children: [
                       Text(result1,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold)),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.05,
@@ -137,11 +137,11 @@ class _MyAppState extends State<MyApp> {
                   isLoading = false;
                 });
               },
-              child: Text(
+              color: Colors.green,
+              child: const Text(
                 'Scrap Data',
                 style: TextStyle(color: Colors.white),
               ),
-              color: Colors.green,
             )
           ],
         )),
