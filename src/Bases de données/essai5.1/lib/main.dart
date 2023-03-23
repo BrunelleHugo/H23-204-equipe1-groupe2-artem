@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp();
@@ -31,7 +29,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 // Strings to store the extracted Article titles
   String result1 = 'Result 1';
-  String imageUrl;
 
 // boolean to show CircularProgressIndication
 // while Web Scraping awaits
@@ -39,15 +36,15 @@ class _MyAppState extends State<MyApp> {
 
   Future<List<String>> extractData() async {
     // Getting the response from the targeted url
-    var http1 = 'http://www.saatchiart.com/account/artworks/742148';
-    var http2 = 'https://arttocanvas.com/shop/?tx_pa_artist=Mark%20Rothko';
-    var http3 = 'https://www.artfinder.com/artist/monika-luniak';
-    var http4 = 'https://www.prints.com/art.php/W_Michael_Frye/?artist_id=6448';
-    var http5 = 'https://www.fulcrumgallery.com/a37870/W-Michael-Frye.htm';
-    var http6 = 'https://www.etsy.com/ca/market/local_montreal_art';
-    var http7 = 'https://artmatch.ca/canadian-art-for-sale/';
-    var http8 = 'https://www.artsy.net/artist/jean-dubuffet/works-for-sale';
-    var http9 = 'https://loriginal.org/product-category/pascal-2/';
+    var http1 = 'http://www.saatchiart.com/account/artworks/738322';
+    var http2 = 'http://arttocanvas.com/shop/?tx_pa_artist=Mark%20Rothko';
+    var http3 = 'http://www.artfinder.com/artist/monika-luniak';
+    var http4 = 'http://www.prints.com/art.php/W_Michael_Frye/?artist_id=6448';
+    var http5 = 'http://www.fulcrumgallery.com/a37870/W-Michael-Frye.htm';
+    var http6 = 'http://www.etsy.com/ca/market/local_montreal_art';
+    var http7 = 'http://artmatch.ca/canadian-art-for-sale/';
+    var http8 = 'http://www.artsy.net/artist/jean-dubuffet/works-for-sale';
+    var http9 = 'http://loriginal.org/product-category/pascal-2/';
     final response = await http.Client().get(Uri.parse(http1));
 
     // Status Code 200 means response has been received successfully
@@ -58,29 +55,47 @@ class _MyAppState extends State<MyApp> {
       int counter = 0;
       try {
         // Scraping the first article title
-        print("1");
-        var idElement = document.getElementsByTagName('img');
-        print(idElement.length);
-        for (var image in idElement) {
-          var name = image.attributes['alt'];
-
-          if (notEqual(image.attributes['src'], null)) {
-            imageUrl = image.attributes['src'];
-          } else {
-            imageUrl = image.attributes['data-src'];
+        //print("1");
+        var classlor = document.getElementsByClassName("sc-1ypbzzj-4 sc-9pmg3r-2 cgnOZJ kpSjBp");
+        var username = document.getElementById("user-name");
+        print(username.toString());
+        print("****----****----****----****\n****----****----****----****\n****----****----****----****");
+        for (var h = 0; h < classlor.length; h++) {
+          var oeuvre, dimension, imageUrl;
+          var case1 = classlor[h].children[0];
+          var img = case1.getElementsByTagName("img");
+          var h2 = case1.getElementsByTagName("h2");
+          var h4 = case1.getElementsByTagName("h4");
+          //print("2");
+          for (var image in img) {
+            if (notEqual(image.attributes['src'], null)) {
+              imageUrl = image.attributes['src'];
+            } else {
+              imageUrl = image.attributes['data-src'];
+            }
           }
 
-          if (notEqual(imageUrl, null) && notEqual(name, null)) {
+          for (var h21 in h2) {
+            if (equal(oeuvre, null)) oeuvre = h21.text;
+          }
+
+          for (var h41 in h4) {
+            if (equal(dimension, null)) dimension = h41.text;
+          }
+
+          if (notEqual(imageUrl, null)) {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
               counter++;
               print(counter);
-              print(name);
-              print(imageUrl.toString());
+              print("oeuvre: " + oeuvre);
+              print("imageUrl: " + imageUrl.toString());
+              print("dimension: " + dimension);
+              print("****----****----****----****");
             }
           }
         }
 
-        return [result1];
+        return [username.toString()];
       } catch (Exception) {
         return ['', '', 'ERROR!'];
       }

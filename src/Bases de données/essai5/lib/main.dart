@@ -24,16 +24,14 @@ class _MyAppState extends State<MyApp> {
   String result1 = 'Result 1';
   var imageUrl;
 
-
 // boolean to show CircularProgressIndication
 // while Web Scraping awaits
   bool isLoading = false;
 
-
   Future<List<String>> extractData() async {
     // Getting the response from the targeted url
     final response = await http.Client()
-        .get(Uri.parse('http://www.saatchiart.com/account/artworks/726323'));
+        .get(Uri.parse('http://www.saatchiart.com/account/artworks/742148'));
 
     // Status Code 200 means response has been received successfully
 
@@ -43,16 +41,29 @@ class _MyAppState extends State<MyApp> {
       try {
         // Scraping the first article title
         print("1");
-        var idElement = document.getElementsByTagName("img");
-        print(idElement.length);
-        for (var i = 0; i < idElement.length; i++) {
-          var image = idElement[i];
-          var name = image.attributes["alt"];
+        var classElement = document.getElementsByClassName("sc-1ybxa11-1 Utusx");
+        // print(idElement.length);
+        for (var i = 0; i < classElement.length; i++) {
+          print(i);
 
-          var link1 = image.attributes;
-          imageUrl = image.attributes["data-src"];
-          print(link1);
-          print(imageUrl.toString());
+          var image = classElement[i];
+          var a = image.getElementsByTagName("a");
+          var href = a[0].attributes["href"];
+          var name = a[0].text;
+
+          var dimensions = image.getElementsByTagName("span");
+          var dimension = dimensions[0].text;
+
+          if (!href.toString().contains("http")) {
+            print(name);
+            print("https://www.saatchiart.com" + href);
+            print(dimension);
+          }
+
+          // var link1 = image.attributes;
+          // imageUrl = image.attributes["data-src"];
+          // print(link1);
+          // print(imageUrl.toString());
 
           // if (imageUrl.endsWith(".jpg")){
           //   print(name + ": " + imageUrl);
@@ -62,7 +73,7 @@ class _MyAppState extends State<MyApp> {
 
         //print(idElement);
 
-        return [result1];
+        return ["result1.toString()"];
       } catch (e) {
         return ['', '', 'ERROR!'];
       }
@@ -74,7 +85,6 @@ class _MyAppState extends State<MyApp> {
   //   final file = File('$fileName.glb');
   //   await file.writeAsBytes(response.bodyBytes);
   // }
-
 
   @override
   Widget build(BuildContext context) {
