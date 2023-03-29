@@ -10,16 +10,17 @@ class InsertData extends StatefulWidget {
 
 class _InsertDataState extends State<InsertData> {
 
-  final  userNameController = TextEditingController();
-  final  userAgeController = TextEditingController();
-  final  userSalaryController = TextEditingController();
+  final artistNameController = TextEditingController();
+  final artistProfilePicController = TextEditingController();
+  final artistCreationsNameController = TextEditingController();
+  final artistCreationsPicController = TextEditingController();
 
   late DatabaseReference dbRef;
 
   @override
   void initState() {
     super.initState();
-    dbRef = FirebaseDatabase.instance.ref().child('Students');
+    dbRef = FirebaseDatabase.instance.ref().child('Artists');
   }
 
 
@@ -49,36 +50,48 @@ class _InsertDataState extends State<InsertData> {
                 height: 30,
               ),
               TextField(
-                controller: userNameController,
+                controller: artistNameController,
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Name',
-                  hintText: 'Enter Your Name',
+                  hintText: 'Enter name',
                 ),
               ),
               const SizedBox(
                 height: 30,
               ),
               TextField(
-                controller: userAgeController,
-                keyboardType: TextInputType.number,
+                controller: artistProfilePicController,
+                keyboardType: TextInputType.url,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Age',
-                  hintText: 'Enter Your Age',
+                  labelText: 'Image',
+                  hintText: 'Enter link',
                 ),
               ),
               const SizedBox(
                 height: 30,
               ),
               TextField(
-                controller: userSalaryController,
-                keyboardType: TextInputType.phone,
+                controller: artistCreationsNameController,
+                keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Salary',
-                  hintText: 'Enter Your Salary',
+                  labelText: 'Title',
+                  hintText: 'Enter title',
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              TextField(
+                controller: artistCreationsPicController,
+                keyboardType: TextInputType.url,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Image',
+                  hintText: 'Enter link',
                 ),
               ),
               const SizedBox(
@@ -86,13 +99,14 @@ class _InsertDataState extends State<InsertData> {
               ),
               MaterialButton(
                 onPressed: () {
-                  Map<String, String> students = {
-                    'name': userNameController.text,
-                    'age': userAgeController.text,
-                    'salary': userSalaryController.text
+                  Map<String, String> artists = {
+                    'name': artistNameController.text,
+                    'pic': artistProfilePicController.text,
+                    'title': artistCreationsNameController.text,
+                    'creation': artistCreationsPicController.text
                   };
 
-                  dbRef.push().set(students);
+                  dbRef.push().set(artists);
 
                 },
                 color: Colors.blue,
