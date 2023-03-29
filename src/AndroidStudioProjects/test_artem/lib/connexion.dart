@@ -15,7 +15,7 @@ class Connexion extends StatelessWidget {
           const Text(
             'Connexion',
             style: TextStyle(
-              fontSize: 58.0,
+              fontSize: 68.0,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),

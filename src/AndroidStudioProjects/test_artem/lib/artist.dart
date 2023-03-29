@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_artem/inscription.dart';
+import 'package:test_artem/profil.dart';
 
 class Artiste extends StatelessWidget {
   const Artiste({Key? key}) : super(key: key);

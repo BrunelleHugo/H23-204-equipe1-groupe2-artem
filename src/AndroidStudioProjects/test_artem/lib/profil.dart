@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-class Profil extends StatelessWidget {
+class Profil extends StatefulWidget {
   const Profil({Key? key}) : super(key: key);
+
+  @override
+  _ProfilState createState() => _ProfilState();
+}
+
+class _ProfilState extends State<Profil> {
+  final List<Color> _selectedColors = [
+    Colors.white,
+    Colors.black,
+    Colors.blue,
+    Colors.green,
+    Colors.red
+  ];
+  List<String> choices1 = ['Contemporain', 'Moderne', 'Abstrait', 'Graffiti'];
+  String selectedChoice1 = 'Contemporain';
+  String selectedChoice2 = 'Contemporain';
+  String selectedChoice3 = 'Contemporain';
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +46,17 @@ class Profil extends StatelessWidget {
               children: [
                 const Text('Nom:'),
                 const SizedBox(width: 10.0),
-                CircleAvatar(
-                  radius: 25.0,
-                  backgroundColor: Colors.grey[300],
-                  child: const TextField(
-                    textAlign: TextAlign.center,
+                Container(height: 4,
+                  width: 20,
+                  child: TextField(
                     decoration: InputDecoration(
-                      border: InputBorder.none,
+                      hintText: 'Entrez votre nom',
+                      filled: true,
+                      fillColor: Colors.grey[300],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                   ),
                 ),
@@ -46,28 +68,136 @@ class Profil extends StatelessWidget {
               children: [
                 const Text('Adresse courriel:'),
                 const SizedBox(width: 10.0),
-                CircleAvatar(
-                  radius: 25.0,
-                  backgroundColor: Colors.grey[300],
-                  child: const TextField(
-                    textAlign: TextAlign.center,
+                Container(height: 4,
+                  width: 20,
+                  child: TextField(
                     decoration: InputDecoration(
-                      border: InputBorder.none,
+                      hintText: 'Entrez votre adresse courriel',
+                      filled: true,
+                      fillColor: Colors.grey[300],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
+
             const SizedBox(height: 10.0),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Intérêts',
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 10.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(100.0),
+           const Text(
+              'Intérets',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                DropdownButton<String>(
+                  value: selectedChoice1,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedChoice1 = newValue!;
+                    });
+                  },
+                  items: choices1
+                      .map<DropdownMenuItem<String>>(
+                        (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        ),
+                      )
+                      .toList(),
+                ),
+                DropdownButton<String>(
+                  value: selectedChoice2,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedChoice2 = newValue!;
+                    });
+                  },
+                  items: choices1
+                      .map<DropdownMenuItem<String>>(
+                        (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        ),
+                      )
+                      .toList(),
+                ),
+                DropdownButton<String>(
+                  value: selectedChoice3,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedChoice3 = newValue!;
+                    });
+                  },
+                  items: choices1
+                      .map<DropdownMenuItem<String>>(
+                        (String value) => DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10.0),
+            const Text(
+              'Couleurs',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                _selectedColors.length,
+                (index) => GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Choisis une couleur'),
+                          content: SingleChildScrollView(
+                            child: ColorPicker(
+                              pickerColor: _selectedColors[index],
+                              onColorChanged: (Color color) {
+                                setState(() {
+                                  _selectedColors[index] = color;
+                                });
+                              },
+                              showLabel: true,
+                              pickerAreaHeightPercent: 0.8,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: _selectedColors[index],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -75,50 +205,22 @@ class Profil extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                CircleAvatar(
-                  radius: 20.0,
-                  backgroundColor: Colors.red,
-                ),
                 SizedBox(width: 10.0),
-                CircleAvatar(
-                  radius: 20.0,
-                  backgroundColor: Colors.blue,
-                ),
-                SizedBox(width: 10.0),
-                CircleAvatar(
-                  radius: 20.0,
-                  backgroundColor: Colors.green,
-                ),
               ],
             ),
-            const SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                CircleAvatar(
-                  radius: 20.0,
-                  backgroundColor: Colors.purple,
-                ),
-                SizedBox(width: 10.0),
-                CircleAvatar(
-                  radius: 20.0,
-                  backgroundColor: Colors.deepPurple,
-                ),
-              ],
-            ),
-            const SizedBox(height: 10.0),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Palette de couleurs',
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 10.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(100.0),
-                ),
-              ),
-            ),
+            // const SizedBox(height: 10.0),
+            // TextField(
+            //   decoration: InputDecoration(
+            //     labelText: 'Palette de couleurs ($selectedChoice1)',
+            //     filled: true,
+            //     fillColor: Colors.white,
+            //     contentPadding: const EdgeInsets.symmetric(
+            //         vertical: 10.0, horizontal: 10.0),
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(100.0),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {},

@@ -7,6 +7,7 @@ class Inscription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: const Text('Inscription'),
@@ -18,11 +19,12 @@ class Inscription extends StatelessWidget {
             const Text(
               'Inscription',
               style: TextStyle(
-                fontSize: 58.0,
+                fontSize: 68.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
-            ),const SizedBox(
+            ),
+            const SizedBox(
               height: 20.0,
             ),
             SizedBox(
@@ -87,10 +89,12 @@ class Inscription extends StatelessWidget {
               height: 20.0,
             ),
             ElevatedButton.icon(
-              onPressed: () { Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Profil()),
-              );},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Profil()),
+                );
+              },
               label: const Text(
                 'Suivant',
                 style: TextStyle(
