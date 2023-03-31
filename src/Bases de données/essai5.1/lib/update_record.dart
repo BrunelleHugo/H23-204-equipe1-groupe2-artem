@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class UpdateRecord extends StatefulWidget {
 
-  const UpdateRecord({Key? key, required this.studentKey}) : super(key: key);
+  const UpdateRecord({Key? key, required this.artistsKey}) : super(key: key);
 
-  final String studentKey;
+  final String artistsKey;
 
   @override
   State<UpdateRecord> createState() => _UpdateRecordState();
@@ -13,28 +13,29 @@ class UpdateRecord extends StatefulWidget {
 
 class _UpdateRecordState extends State<UpdateRecord> {
 
-  final  userNameController = TextEditingController();
-  final  userAgeController= TextEditingController();
-  final  userSalaryController =TextEditingController();
+  final artistNameController = TextEditingController();
+  final artistProfilePicController = TextEditingController();
+  final artistCreationsNameController = TextEditingController();
+  final artistCreationsPicController = TextEditingController();
 
   late DatabaseReference dbRef;
 
   @override
   void initState() {
     super.initState();
-    dbRef = FirebaseDatabase.instance.ref().child('Students');
+    dbRef = FirebaseDatabase.instance.ref().child('Artists');
     getStudentData();
   }
 
   void getStudentData() async {
-    DataSnapshot snapshot = await dbRef.child(widget.studentKey).get();
+    DataSnapshot snapshot = await dbRef.child(widget.artistsKey).get();
 
-    Map student = snapshot.value as Map;
+    Map artists = snapshot.value as Map;
 
-    userNameController.text = student['name'];
-    userAgeController.text = student['age'];
-    userSalaryController.text = student['salary'];
-
+    artistNameController.text = artists['name'];
+    artistProfilePicController.text = artists['pic'];
+    artistCreationsNameController.text = artists['title'];
+    artistCreationsPicController.text = artists['creation'];
   }
 
 
@@ -64,36 +65,48 @@ class _UpdateRecordState extends State<UpdateRecord> {
                 height: 30,
               ),
               TextField(
-                controller: userNameController,
+                controller: artistCreationsNameController,
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Name',
-                  hintText: 'Enter Your Name',
+                  hintText: 'Enter name',
                 ),
               ),
               const SizedBox(
                 height: 30,
               ),
               TextField(
-                controller: userAgeController,
-                keyboardType: TextInputType.number,
+                controller: artistProfilePicController,
+                keyboardType: TextInputType.url,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Age',
-                  hintText: 'Enter Your Age',
+                  labelText: 'Pic',
+                  hintText: 'Enter link',
                 ),
               ),
               const SizedBox(
                 height: 30,
               ),
               TextField(
-                controller: userSalaryController,
-                keyboardType: TextInputType.phone,
+                controller: artistCreationsNameController,
+                keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Salary',
-                  hintText: 'Enter Your Salary',
+                  labelText: 'Title',
+                  hintText: 'Enter title',
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              TextField(
+                controller: artistCreationsPicController,
+                keyboardType: TextInputType.url,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Image',
+                  hintText: 'Enter link',
                 ),
               ),
               const SizedBox(
@@ -103,12 +116,13 @@ class _UpdateRecordState extends State<UpdateRecord> {
                 onPressed: () {
 
                   Map<String, String> students = {
-                    'name': userNameController.text,
-                    'age': userAgeController.text,
-                    'salary': userSalaryController.text
+                    'name': artistCreationsNameController.text,
+                    'pic': artistProfilePicController.text,
+                    'title': artistCreationsNameController.text,
+                    'creation': artistCreationsPicController.text
                   };
 
-                  dbRef.child(widget.studentKey).update(students)
+                  dbRef.child(widget.artistsKey).update(students)
                       .then((value) => {
                     Navigator.pop(context)
                   });

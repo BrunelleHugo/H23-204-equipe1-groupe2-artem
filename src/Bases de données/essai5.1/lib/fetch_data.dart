@@ -12,10 +12,12 @@ class FetchData extends StatefulWidget {
 
 class _FetchDataState extends State<FetchData> {
 
-  Query dbRef = FirebaseDatabase.instance.ref().child('Students');
-  DatabaseReference reference = FirebaseDatabase.instance.ref().child('Students');
+  Query dbRef = FirebaseDatabase.instance.ref().child('Artists');
+  DatabaseReference reference = FirebaseDatabase.instance.ref().child('Artists');
 
-  Widget listItem({required Map student}) {
+  get artists => null;
+
+  Widget listItem({required Map artists}) {
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
@@ -26,21 +28,28 @@ class _FetchDataState extends State<FetchData> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            student['name'],
+            artists['name'],
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           ),
           const SizedBox(
             height: 5,
           ),
           Text(
-            student['age'],
+            artists['pic'],
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           ),
           const SizedBox(
             height: 5,
           ),
           Text(
-            student['salary'],
+            artists['title'],
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            artists['creation'],
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           ),
           Row(
@@ -49,7 +58,7 @@ class _FetchDataState extends State<FetchData> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => UpdateRecord(studentKey: student['key'])));
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => UpdateRecord(artistsKey: artists['key'])));
                 },
                 child: Row(
                   children: [
@@ -65,7 +74,7 @@ class _FetchDataState extends State<FetchData> {
               ),
               GestureDetector(
                 onTap: () {
-                  reference.child(student['key']).remove();
+                  reference.child(artists['key']).remove();
                 },
                 child: Row(
                   children: [
@@ -98,7 +107,7 @@ class _FetchDataState extends State<FetchData> {
               Map student = snapshot.value as Map;
               student['key'] = snapshot.key;
 
-              return listItem(student: student);
+              return listItem(artists: artists);
 
             },
           ),
