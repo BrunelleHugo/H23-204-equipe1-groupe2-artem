@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1036159122416",
+    "firebase_url": "https://extreme-mix-377919-default-rtdb.firebaseio.com",
+    "project_id": "extreme-mix-377919",
+    "storage_bucket": "extreme-mix-377919.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036159122416:android:c330a45c6a59711470fb35",
+        "android_client_info": {
+          "package_name": "io.flutter.plugins"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036159122416-k2hdv2v533i42nk8c154i4p376g855i0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcNkXsz5DpQ2xkXiOPsZX4ZnrHnfRIAlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036159122416-k2hdv2v533i42nk8c154i4p376g855i0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
