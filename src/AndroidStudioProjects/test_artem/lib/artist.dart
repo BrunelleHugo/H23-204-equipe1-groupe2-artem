@@ -321,5 +321,4 @@ class _ArtisteState extends State<Artiste> {
       ),
     );
   }
-
 }

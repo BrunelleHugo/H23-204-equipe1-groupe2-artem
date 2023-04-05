@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
 
       home: Connexion(),
     );
-  }
+  } 
 }
 
 class RootPage extends StatefulWidget {
