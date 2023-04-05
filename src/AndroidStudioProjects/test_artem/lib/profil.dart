@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:test_artem/artist.dart';
 
 class Profil extends StatefulWidget {
   const Profil({Key? key}) : super(key: key);
@@ -28,14 +29,14 @@ class _ProfilState extends State<Profil> {
       appBar: AppBar(
         title: const Text('Profil'),
       ),
-      body: Center(
+      body:SingleChildScrollView(child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: [const SizedBox(height: 60.0),
             const Text(
               'Profil',
               style: TextStyle(
-                fontSize: 56.0,
+                fontSize: 66.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -44,10 +45,11 @@ class _ProfilState extends State<Profil> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Nom:'),
+                const Text('Nom:               ',style: TextStyle(fontSize: 22),),
                 const SizedBox(width: 10.0),
-                Container(height: 4,
-                  width: 20,
+                SizedBox(
+                  height: 50,
+                  width: 250,
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Entrez votre nom',
@@ -66,10 +68,11 @@ class _ProfilState extends State<Profil> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Adresse courriel:'),
+                const Text('Adresse courriel:',style: TextStyle(fontSize: 22),),
                 const SizedBox(width: 10.0),
-                Container(height: 4,
-                  width: 20,
+                SizedBox(
+                  height: 50,
+                  width: 250,
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Entrez votre adresse courriel',
@@ -84,12 +87,11 @@ class _ProfilState extends State<Profil> {
                 ),
               ],
             ),
-
             const SizedBox(height: 10.0),
-           const Text(
+            const Text(
               'Intérets',
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 28.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -107,10 +109,10 @@ class _ProfilState extends State<Profil> {
                   items: choices1
                       .map<DropdownMenuItem<String>>(
                         (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
-                      )
+                      value: value,
+                      child: Text(value),
+                    ),
+                  )
                       .toList(),
                 ),
                 DropdownButton<String>(
@@ -123,10 +125,10 @@ class _ProfilState extends State<Profil> {
                   items: choices1
                       .map<DropdownMenuItem<String>>(
                         (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
-                      )
+                      value: value,
+                      child: Text(value),
+                    ),
+                  )
                       .toList(),
                 ),
                 DropdownButton<String>(
@@ -139,10 +141,10 @@ class _ProfilState extends State<Profil> {
                   items: choices1
                       .map<DropdownMenuItem<String>>(
                         (String value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
-                      )
+                      value: value,
+                      child: Text(value),
+                    ),
+                  )
                       .toList(),
                 ),
               ],
@@ -151,7 +153,7 @@ class _ProfilState extends State<Profil> {
             const Text(
               'Couleurs',
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 28.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -160,7 +162,7 @@ class _ProfilState extends State<Profil> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 _selectedColors.length,
-                (index) => GestureDetector(
+                    (index) => GestureDetector(
                   onTap: () {
                     showDialog(
                       context: context,
@@ -208,35 +210,27 @@ class _ProfilState extends State<Profil> {
                 SizedBox(width: 10.0),
               ],
             ),
-            // const SizedBox(height: 10.0),
-            // TextField(
-            //   decoration: InputDecoration(
-            //     labelText: 'Palette de couleurs ($selectedChoice1)',
-            //     filled: true,
-            //     fillColor: Colors.white,
-            //     contentPadding: const EdgeInsets.symmetric(
-            //         vertical: 10.0, horizontal: 10.0),
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(100.0),
-            //     ),
-            //   ),
-            // ),
             const SizedBox(height: 20.0),
             ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Artiste()),
+                );
+              },
               child: const Text(
                 'Devenir un artiste',
                 style: TextStyle(
                   color: Colors.white,
                 ),
               ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.black,
+              ),
             ),
           ],
         ),
-      ),
+      ),),
     );
   }
 }

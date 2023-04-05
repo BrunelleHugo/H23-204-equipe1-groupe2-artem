@@ -30,7 +30,7 @@ migrate_working_dir/
 .packages
 .pub-cache/
 .pub/
-/build/
+src/AndroidStudioProjects/test_artem/build
 
 # Symbolication related
 app.*.symbols
@@ -42,3 +42,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+.idea/libraries/Dart_Packages.xml
+src/AndroidStudioProjects/test_artem/.dart_tool/dartpad/web_plugin_registrant.dart

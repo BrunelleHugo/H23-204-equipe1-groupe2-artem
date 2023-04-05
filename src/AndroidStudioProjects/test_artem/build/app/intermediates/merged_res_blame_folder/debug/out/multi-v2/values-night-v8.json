@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.test_artem.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.test_artem.app-mergeDebugResources-16:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\brune\\Documents\\GitHub\\H23-204-equipe1-groupe2-artem\\src\\AndroidStudioProjects\\test_artem\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\Rebecca\\Desktop\\Projet d'integration\\H23-204-equipe1-groupe2-artem\\src\\AndroidStudioProjects\\test_artem\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
