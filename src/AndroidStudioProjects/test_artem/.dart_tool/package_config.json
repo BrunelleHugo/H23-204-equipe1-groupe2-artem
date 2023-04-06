@@ -32,6 +32,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "color_thief_flutter",
+      "rootUri": "file:///C:/Users/Rebecca/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/color_thief_flutter-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "cross_file",
       "rootUri": "file:///C:/Users/Rebecca/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/cross_file-0.3.3+4",
       "packageUri": "lib/",
@@ -158,6 +164,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "palette_generator",
+      "rootUri": "file:///C:/Users/Rebecca/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/palette_generator-0.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
       "name": "path",
       "rootUri": "file:///C:/Users/Rebecca/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/path-1.8.2",
       "packageUri": "lib/",
@@ -198,6 +210,12 @@
       "rootUri": "file:///C:/Users/Rebecca/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/plugin_platform_interface-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.17"
+    },
+    {
+      "name": "quantize_dart",
+      "rootUri": "file:///C:/Users/Rebecca/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/quantize_dart-1.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
     },
     {
       "name": "sky_engine",
@@ -260,7 +278,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-04-05T20:14:29.159907Z",
+  "generated": "2023-04-05T22:22:27.981151Z",
   "generator": "pub",
   "generatorVersion": "2.19.4"
 }

@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:test_artem/artist.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 
 class Artiste extends StatefulWidget {
   const Artiste({Key? key}) : super(key: key);
@@ -26,7 +24,10 @@ class _ArtisteState extends State<Artiste> {
   String selectedChoice1 = 'Contemporain';
   String selectedChoice2 = 'Contemporain';
   String selectedChoice3 = 'Contemporain';
-  List<Widget> _imageWidgets = [];
+
+  final List<Widget> _profileImageWidgets = [];
+  final List<Widget> _artImageWidgets = [];
+
   Future<void> _checkPermission(BuildContext context) async {
     var status = await Permission.photos.status;
     if (!status.isGranted) {
@@ -35,12 +36,13 @@ class _ArtisteState extends State<Artiste> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Permissions insuffisantes'),
-            content: Text('Veuillez autoriser l\'accès aux photos pour pouvoir ajouter des photos.'),
+            title: const Text('Permissions insuffisantes'),
+            content: const Text(
+                'Veuillez autoriser l\'accès aux photos pour pouvoir ajouter des photos.'),
             actions: <Widget>[
               ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -51,13 +53,15 @@ class _ArtisteState extends State<Artiste> {
     // Ici, vous pouvez accéder à la galerie de photos car la permission est accordée.
   }
 
-  void _addPhoto() async {
+
+  void _addPhotoProfile() async {
     var status = await Permission.photos.request();
     if (status.isGranted) {
       final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         setState(() {
-          _imageWidgets.add(
+          _profileImageWidgets.clear(); // remove any previous profile picture
+          _profileImageWidgets.add(
             Stack(
               children: [
                 Image.file(
@@ -68,8 +72,8 @@ class _ArtisteState extends State<Artiste> {
                   top: 0,
                   right: 0,
                   child: IconButton(
-                    onPressed: () => _deletePhoto(_imageWidgets.length - 1),
-                    icon: Icon(Icons.delete),
+                    onPressed: () => _deletePhotoProfile(),
+                    icon: const Icon(Icons.delete,color: Colors.white),
                   ),
                 ),
               ],
@@ -80,9 +84,44 @@ class _ArtisteState extends State<Artiste> {
     }
   }
 
-  void _deletePhoto(int index) {
+  void _addPhotoArt() async {
+    var status = await Permission.photos.request();
+    if (status.isGranted) {
+      final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _artImageWidgets.add(
+            Stack(
+              children: [
+                Image.file(
+                  File(pickedFile.path),
+                  fit: BoxFit.cover,
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: IconButton(
+                    onPressed: () => _deletePhotoArt(_artImageWidgets.length - 1),
+                    icon: const Icon(Icons.delete,color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+      }
+    }
+  }
+
+  void _deletePhotoProfile() {
     setState(() {
-      _imageWidgets.removeAt(index);
+      _profileImageWidgets.clear();
+    });
+  }
+
+  void _deletePhotoArt(int index) {
+    setState(() {
+      _artImageWidgets.removeAt(index);
     });
   }
 
@@ -105,11 +144,25 @@ class _ArtisteState extends State<Artiste> {
                 color: Colors.black,
               ),
             ),
-            const SizedBox(
-              height: 100.0,
-              width: 100,
-              child: Placeholder(),
+            Center(
+              child: InkWell(
+                onTap: () => _addPhotoProfile(),
+                child: SizedBox(
+                  height: 200.0,
+                  width: 150.0,
+                  child: _profileImageWidgets.isEmpty
+                      ? const Icon(
+                    Icons.add_a_photo,
+                    color: Colors.black,
+                    size: 40.0,
+                  )
+                      : _profileImageWidgets[0],
+                ),
+              ),
             ),
+
+
+
             const SizedBox(height: 20),
             Container(
               width: 300,
@@ -121,7 +174,7 @@ class _ArtisteState extends State<Artiste> {
               child: const TextField(
                 decoration: InputDecoration.collapsed(
                   hintText: 'Nom complet',
-                  hintStyle: TextStyle(color: Colors.black),
+                  hintStyle: TextStyle(color: Colors.black,),
                 ),
               ),
             ),
@@ -178,10 +231,10 @@ class _ArtisteState extends State<Artiste> {
                   items: choices1
                       .map<DropdownMenuItem<String>>(
                         (String value) => DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    ),
-                  )
+                          value: value,
+                          child: Text(value),
+                        ),
+                      )
                       .toList(),
                 ),
                 DropdownButton<String>(
@@ -194,10 +247,10 @@ class _ArtisteState extends State<Artiste> {
                   items: choices1
                       .map<DropdownMenuItem<String>>(
                         (String value) => DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    ),
-                  )
+                          value: value,
+                          child: Text(value),
+                        ),
+                      )
                       .toList(),
                 ),
                 DropdownButton<String>(
@@ -210,10 +263,10 @@ class _ArtisteState extends State<Artiste> {
                   items: choices1
                       .map<DropdownMenuItem<String>>(
                         (String value) => DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    ),
-                  )
+                          value: value,
+                          child: Text(value),
+                        ),
+                      )
                       .toList(),
                 ),
               ],
@@ -231,7 +284,7 @@ class _ArtisteState extends State<Artiste> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 _selectedColors.length,
-                    (index) => GestureDetector(
+                (index) => GestureDetector(
                   onTap: () {
                     showDialog(
                       context: context,
@@ -273,7 +326,6 @@ class _ArtisteState extends State<Artiste> {
               ),
             ),
             const SizedBox(height: 20.0),
-
             const SizedBox(height: 10.0),
             const Text(
               'Oeuvres d\'art',
@@ -286,33 +338,33 @@ class _ArtisteState extends State<Artiste> {
             ElevatedButton(
               onPressed: () {
                 _checkPermission(context);
-                _addPhoto();
+                _addPhotoArt();
               },
               child: const Text('Ajouter une photo'),
             ),
             Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
-              children: _imageWidgets
+              children: _artImageWidgets
                   .asMap()
                   .map(
                     (index, widget) => MapEntry(
-                  index,
-                  Stack(
-                    children: [
-                      widget,
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () => _deletePhoto(index),
-                        ),
+                      index,
+                      Stack(
+                        children: [
+                          widget,
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: IconButton(
+                              icon: const Icon(Icons.delete,color: Colors.white,),
+                              onPressed: () => _deletePhotoArt(index),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              )
+                    ),
+                  )
                   .values
                   .toList(),
             ),

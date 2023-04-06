@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4657626d-e05d-4094-90bf-95a2f7da0e0f" name="Changes" comment="commit&#10;C'est la version que j'avais peur de perdre">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/.dart_tool/package_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/.dart_tool/package_config_subset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/7.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/7.5/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/7.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/7.5/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/7.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/7.5/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/7.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/7.5/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/4f2a58af27abc49ecf55570043bbf938.cache.dill.track.dill" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/4f2a58af27abc49ecf55570043bbf938.cache.dill.track.dill" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/assets/debug/mergeDebugAssets/flutter_assets/NOTICES.Z" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/assets/debug/mergeDebugAssets/flutter_assets/NOTICES.Z" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/assets/debug/mergeDebugAssets/flutter_assets/kernel_blob.bin" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/assets/debug/mergeDebugAssets/flutter_assets/kernel_blob.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/compressed_assets/debug/out/assets/flutter_assets/NOTICES.Z.jar" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/compressed_assets/debug/out/assets/flutter_assets/NOTICES.Z.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/compressed_assets/debug/out/assets/flutter_assets/kernel_blob.bin.jar" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/compressed_assets/debug/out/assets/flutter_assets/kernel_blob.bin.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/flutter/debug/flutter_assets/NOTICES.Z" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/flutter/debug/flutter_assets/NOTICES.Z" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/flutter/debug/flutter_assets/kernel_blob.bin" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/flutter/debug/flutter_assets/kernel_blob.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/flutter/debug/flutter_build.d" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/flutter/debug/flutter_build.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/outputs/apk/debug/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/outputs/apk/debug/app-debug.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/outputs/flutter-apk/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/outputs/flutter-apk/app-debug.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/outputs/flutter-apk/app-debug.apk.sha1" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/build/app/outputs/flutter-apk/app-debug.apk.sha1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/lib/artist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/lib/artist.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

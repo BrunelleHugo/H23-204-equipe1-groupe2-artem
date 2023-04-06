@@ -41,6 +41,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.17.0"
+  color_thief_flutter:
+    dependency: "direct main"
+    description:
+      name: color_thief_flutter
+      sha256: ea818d81d7fd5a29e51bfba7637e37619ad79cedd369c722de3decad5910adbc
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.2"
   cross_file:
     dependency: transitive
     description:
@@ -200,6 +208,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.8.0"
+  palette_generator:
+    dependency: "direct main"
+    description:
+      name: palette_generator
+      sha256: "8edfc37056a0af212fb96ef7e7d3b3ef0ae997d6c75474c3b9bdbee473559152"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
   path:
     dependency: transitive
     description:
@@ -256,6 +272,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.4"
+  quantize_dart:
+    dependency: transitive
+    description:
+      name: quantize_dart
+      sha256: "5ceb382a6f91e6d88645f479b087fe5e627e4cd835d362fe40013dd8334b8150"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.3"
   sky_engine:
     dependency: transitive
     description: flutter
