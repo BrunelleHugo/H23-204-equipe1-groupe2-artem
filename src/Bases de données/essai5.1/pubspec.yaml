@@ -39,6 +39,7 @@ dependencies:
   firebase_core: ^2.8.0
   http: ^0.12.2
   html: ^0.14.0+4
+  palette_generator: ^0.3.3+2
 
 dev_dependencies:
   flutter_test:

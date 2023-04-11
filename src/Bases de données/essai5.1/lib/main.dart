@@ -1,11 +1,13 @@
 // @dart=2.9
 
+import 'dart:io';
 import 'dart:js_util';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
+import 'package:palette_generator/palette_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,8 +38,14 @@ class _MyAppState extends State<MyApp> {
 
   Future<List<String>> extractData() async {
     // Getting the response from the targeted url
+
+    print('object');
     var http1 = 'http://www.saatchiart.com/account/artworks/726323';
+    print('object2');
     final response = await http.Client().get(Uri.parse(http1));
+    print('object3');
+
+
 
     // Status Code 200 means response has been received successfully
 
@@ -97,6 +105,7 @@ class _MyAppState extends State<MyApp> {
 
           if (notEqual(imageUrl, null)) {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
+              //var paletteGenerator = await PaletteGenerator.fromImageProvider(Image.asset(imageUrl).image).toString();
               counter++;
               // print(counter);
               // print("oeuvre: " + oeuvre);
@@ -106,6 +115,7 @@ class _MyAppState extends State<MyApp> {
               list.add(counter);
               list.add(oeuvre);
               list.add(imageUrl.toString());
+              //list.add(paletteGenerator);
               list.add(dimension);
             }
           }
