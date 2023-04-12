@@ -19,19 +19,21 @@ class Connexion extends StatelessWidget {
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
-          ),const SizedBox(
+          ),
+          const SizedBox(
             height: 20.0,
           ),
           Center(
             child: SizedBox(
               width: 300.0,
               child: TextField(
+                maxLines: 1,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
                   labelText: 'Email',
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 10.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(100.0),
                   ),
@@ -45,12 +47,13 @@ class Connexion extends StatelessWidget {
           SizedBox(
             width: 300.0,
             child: TextField(
+              maxLines: 1,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 labelText: 'Mot de passe',
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 10.0),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(100.0),
                 ),
@@ -59,7 +62,6 @@ class Connexion extends StatelessWidget {
           ),
           const SizedBox(
             height: 13.0,
-
           ),
           const SizedBox(height: 16.0),
           ElevatedButton(
@@ -68,7 +70,9 @@ class Connexion extends StatelessWidget {
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
             ),
             onPressed: () {},
-            child: const Text('Se connecter'),
+            child: const Text(
+              'Se connecter',
+            ),
           ),
           const SizedBox(height: 16.0),
           GestureDetector(

@@ -3,7 +3,7 @@ import 'package:test_artem/connexion.dart';
 import 'package:test_artem/inscription.dart';
 
 final ThemeData myTheme = ThemeData( fontFamily: 'Oswald',
-  primarySwatch: MaterialColor(
+  primarySwatch: const MaterialColor(
     0xFFDECEB4,
     <int, Color>{
       50: Color.fromRGBO(222, 206, 180, 0.1),
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: myTheme,
 
-      home: Connexion(),
+      home: const Connexion(),
     );
   } 
 }
@@ -63,7 +63,7 @@ class _RootPageState extends State<RootPage> {
           onPressed: () {
             debugPrint('Floating action button');
           },
-          child: Icon(Icons.home)),
+          child: const Icon(Icons.home)),
       bottomNavigationBar: NavigationBar(
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: 'Home'),

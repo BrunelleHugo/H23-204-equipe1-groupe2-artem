@@ -30,6 +30,7 @@ class Inscription extends StatelessWidget {
             SizedBox(
               width: 300.0,
               child: TextField(
+                maxLines: 1,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -50,6 +51,7 @@ class Inscription extends StatelessWidget {
             SizedBox(
               width: 300.0,
               child: TextField(
+                maxLines: 1,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -70,6 +72,7 @@ class Inscription extends StatelessWidget {
             SizedBox(
               width: 300.0,
               child: TextField(
+                maxLines: 1,
                 obscureText: true,
                 decoration: InputDecoration(
                   filled: true,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:flutter/services.dart';
 class Artiste extends StatefulWidget {
   const Artiste({Key? key}) : super(key: key);
 
@@ -21,8 +21,8 @@ class _ArtisteState extends State<Artiste> {
     Colors.red
   ];
   List<String> choices1 = ['Contemporain', 'Moderne', 'Abstrait', 'Graffiti'];
-  String selectedChoice1 = 'Contemporain';
-  String selectedChoice2 = 'Contemporain';
+  String selectedChoice1 = 'Moderne';
+  String selectedChoice2 = 'Abstrait';
   String selectedChoice3 = 'Contemporain';
 
   final List<Widget> _profileImageWidgets = [];
@@ -53,11 +53,11 @@ class _ArtisteState extends State<Artiste> {
     // Ici, vous pouvez accéder à la galerie de photos car la permission est accordée.
   }
 
-
   void _addPhotoProfile() async {
     var status = await Permission.photos.request();
     if (status.isGranted) {
-      final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().getImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         setState(() {
           _profileImageWidgets.clear(); // remove any previous profile picture
@@ -73,7 +73,7 @@ class _ArtisteState extends State<Artiste> {
                   right: 0,
                   child: IconButton(
                     onPressed: () => _deletePhotoProfile(),
-                    icon: const Icon(Icons.delete,color: Colors.white),
+                    icon: const Icon(Icons.delete, color: Colors.white),
                   ),
                 ),
               ],
@@ -87,7 +87,8 @@ class _ArtisteState extends State<Artiste> {
   void _addPhotoArt() async {
     var status = await Permission.photos.request();
     if (status.isGranted) {
-      final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker().getImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         setState(() {
           _artImageWidgets.add(
@@ -101,8 +102,9 @@ class _ArtisteState extends State<Artiste> {
                   top: 0,
                   right: 0,
                   child: IconButton(
-                    onPressed: () => _deletePhotoArt(_artImageWidgets.length - 1),
-                    icon: const Icon(Icons.delete,color: Colors.white),
+                    onPressed: () =>
+                        _deletePhotoArt(_artImageWidgets.length - 1),
+                    icon: const Icon(Icons.delete, color: Colors.white),
                   ),
                 ),
               ],
@@ -152,17 +154,14 @@ class _ArtisteState extends State<Artiste> {
                   width: 150.0,
                   child: _profileImageWidgets.isEmpty
                       ? const Icon(
-                    Icons.add_a_photo,
-                    color: Colors.black,
-                    size: 40.0,
-                  )
+                          Icons.add_a_photo,
+                          color: Colors.black,
+                          size: 40.0,
+                        )
                       : _profileImageWidgets[0],
                 ),
               ),
             ),
-
-
-
             const SizedBox(height: 20),
             Container(
               width: 300,
@@ -174,7 +173,9 @@ class _ArtisteState extends State<Artiste> {
               child: const TextField(
                 decoration: InputDecoration.collapsed(
                   hintText: 'Nom complet',
-                  hintStyle: TextStyle(color: Colors.black,),
+                  hintStyle: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ),
@@ -187,6 +188,10 @@ class _ArtisteState extends State<Artiste> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const TextField(
+                keyboardType: TextInputType.multiline,
+                maxLength: 150,
+                //minLines: 1,
+                maxLines: null,
                 decoration: InputDecoration.collapsed(
                   hintText: 'Qui suis-je?',
                   hintStyle: TextStyle(color: Colors.black),
@@ -202,6 +207,10 @@ class _ArtisteState extends State<Artiste> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const TextField(
+                keyboardType: TextInputType.multiline,
+                maxLength: 150,
+                // minLines: 1,
+                // maxLines: 3,
                 decoration: InputDecoration.collapsed(
                   hintText: 'Comment me joindre',
                   hintStyle: TextStyle(color: Colors.black),
@@ -357,7 +366,10 @@ class _ArtisteState extends State<Artiste> {
                             top: 0,
                             right: 0,
                             child: IconButton(
-                              icon: const Icon(Icons.delete,color: Colors.white,),
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
                               onPressed: () => _deletePhotoArt(index),
                             ),
                           ),
