@@ -36,17 +36,11 @@ class _MyAppState extends State<MyApp> {
 // while Web Scraping awaits
   bool isLoading = false;
 
-  Future<List<String>> extractData() async {
+  Future<List<String>> extractData(String url) async {
     // Getting the response from the targeted url
-
-    print('object');
-    var http1 = 'http://www.saatchiart.com/account/artworks/726323';
-    print('object2');
-    final response = await http.Client().get(Uri.parse(http1));
-    print('object3');
+    final response = await http.Client().get(Uri.parse(url));
 
     // Status Code 200 means response has been received successfully
-
     if (response.statusCode == 200) {
       // Getting the html document from the response
       var document = parser.parse(response.body);
@@ -169,7 +163,8 @@ class _MyAppState extends State<MyApp> {
 
                 // Awaiting for web scraping function
                 // to return list of strings
-                final response = await extractData();
+                final response = await extractData(
+                    'http://www.saatchiart.com/account/artworks/726323');
 
                 // Setting the received strings to be
                 // displayed and making isLoading false
