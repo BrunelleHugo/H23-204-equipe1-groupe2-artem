@@ -2887,7 +2887,8 @@ class _MyAppState extends State<MyApp> {
     final response = await http.Client().get(Uri.parse(
         'http://www.saatchiart.com/account/artworks/${users.elementAt(k)}'));
 
-    //DatabaseReference db = FirebaseDatabase.instance.ref();
+    DatabaseReference db =
+        FirebaseDatabase.instance.ref("users/" + users.elementAt(k).toString());
 
     // Status Code 200 means response has been received successfully
     if (response.statusCode == 200) {
