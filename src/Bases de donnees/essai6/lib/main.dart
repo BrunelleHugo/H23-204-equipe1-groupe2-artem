@@ -1,11 +1,19 @@
 // @dart=2.9
 
+import 'dart:async';
+import 'dart:core';
+import 'dart:html' as html;
+import 'dart:html';
+import 'dart:math' as math;
+import 'dart:ui' as ui;
+
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -2827,104 +2835,135 @@ class _MyAppState extends State<MyApp> {
     780143
   ];
 
-  Future<List<String>> extractData(String url) async {
-    for (int k = 1; k < users.length; k++) {
-      // Getting the response from the targeted url
-      final response = await http.Client().get(Uri.parse(
-          'http://www.saatchiart.com/account/artworks/' +
-              users.elementAt(k).toString()));
+  Color col = Colors.black38;
 
-      DatabaseReference db = FirebaseDatabase.instance.ref();
+  Future<ImageData> getImageData(html.ImageElement image) async {
+    html.CanvasElement canvas =
+        html.CanvasElement(width: image.width, height: image.height);
+    html.CanvasRenderingContext2D context = canvas.getContext('2d');
+    context.drawImage(image, 0, 0);
+    return context.getImageData(0, 0, image.width, image.height);
+  }
 
-      // Status Code 200 means response has been received successfully
-      if (response.statusCode == 200) {
-        // Getting the html document from the response
-        var document = parser.parse(response.body);
-        int counter = 0;
-        try {
-          // Scraping the first article title
-          List list = [];
-          var classlor = document
-              .getElementsByClassName("sc-1ypbzzj-4 sc-9pmg3r-2 cgnOZJ kpSjBp");
-          var usagers = document.getElementsByTagName('img');
-          var nom, avatar;
+  Rect roundedRect(Rect rect) {
+    int left = (rect.left / 2).floor() * 2;
+    int top = (rect.top / 2).floor() * 2;
+    int right = (rect.right / 2).ceil() * 2;
+    int bottom = (rect.bottom / 2).ceil() * 2;
+    return Rect.fromLTRB(
+        left.toDouble(), top.toDouble(), right.toDouble(), bottom.toDouble());
+  }
 
-          for (var usager in usagers) {
-            var fl = usager.attributes['src'];
+  /* Future<Color> generatePalette(String url) async {
+    var dominantColor, firstColor;
+    try {
+      ImageProvider imageProvider = NetworkImage(url);
+      PaletteGenerator paletteGenerator =
+          await PaletteGenerator.fromImageProvider(imageProvider,
+              maximumColorCount: 5);
+      dominantColor = paletteGenerator.dominantColor.color;
+      List<Color> topColors = paletteGenerator.colors.toList();
+      firstColor = topColors[0];
+    } catch (Exception) {
+      print(Exception.toString());
+    }
+    return col;
+  } */
 
-            if (fl != null && fl.contains(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
-              nom = usager.attributes['alt'];
-              avatar = usager.attributes['src'];
-              break;
-            }
+  Future<PaletteGenerator> generatePalette(html.ImageElement image) async {
+    ImageData imageData = await getImageData(image);
+    Rect visibleRect =
+        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
+    Rect roundedVisibleRect = roundedRect(visibleRect);
+    ui.Image resizedImage = await decodeImageFromPixels(
+        imageData.data.buffer.asUint8List(), imageData.width, imageData.height);
+
+    ui.Image croppedImage = await cropImage(resizedImage, roundedVisibleRect);
+    return PaletteGenerator.fromImage(croppedImage);
+  }
+
+  Future<List<String>> extractData(int k) async {
+    // Getting the response from the targeted url
+    final response = await http.Client().get(Uri.parse(
+        'http://www.saatchiart.com/account/artworks/${users.elementAt(k)}'));
+
+    //DatabaseReference db = FirebaseDatabase.instance.ref();
+
+    // Status Code 200 means response has been received successfully
+    if (response.statusCode == 200) {
+      // Getting the html document from the response
+      var document = parser.parse(response.body);
+      int counter = 0;
+      try {
+        // Scraping the first article title
+        List list = [];
+        var classlor = document
+            .getElementsByClassName("sc-1ypbzzj-4 sc-9pmg3r-2 cgnOZJ kpSjBp");
+        var usagers = document.getElementsByTagName('img');
+        var nom, avatar;
+
+        for (var usager in usagers) {
+          var fl = usager.attributes['src'];
+
+          if (fl != null && fl.contains(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
+            nom = usager.attributes['alt'];
+            avatar = usager.attributes['src'];
+            break;
           }
-          // print("nom: " + nom);
-          // print("avatar: " + avatar);
-          // print(
-          //     "****----****----****----****\n****----****----****----****\n****----****----****----****");
-          list.add(nom);
-          list.add(avatar);
-
-          for (var h = 0; h < classlor.length; h++) {
-            var oeuvre, dimension, imageUrl;
-            var case1 = classlor[h].children[0];
-            var img = case1.getElementsByTagName("img");
-            var h2 = case1.getElementsByTagName("h2");
-            var h4 = case1.getElementsByTagName("h4")[0].children;
-
-            for (var image in img) {
-              imageUrl = (image.attributes['src'] != null)
-                  ? image.attributes['src']
-                  : image.attributes['data-src'];
-              // if (notEqual(image.attributes['src'], null)) {
-              //   imageUrl = image.attributes['src'];
-              // } else {
-              //   imageUrl = image.attributes['data-src'];
-              // }
-            }
-
-            for (var h21 in h2) {
-              oeuvre ??= h21.text;
-            }
-
-            for (var h41 in h4) {
-              dimension ??= h41.text;
-            }
-
-            if (imageUrl != null) {
-              if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
-                //var paletteGenerator = await PaletteGenerator.fromImageProvider(Image.asset(imageUrl).image).toString();
-                counter++;
-                // print(counter);
-                // print("oeuvre: " + oeuvre);
-                // print("imageUrl: " + imageUrl.toString());
-                // print("dimension: " + dimension);
-                // print("****----****----****----****");
-                list.add(counter);
-                list.add(oeuvre);
-                list.add(imageUrl.toString());
-                //list.add(paletteGenerator);
-                list.add(dimension);
-              }
-            }
-          }
-
-          print(list.toString());
-
-          return [nom.toString()];
-        } catch (Exception) {
-          return ['', '', 'ERROR!'];
         }
+        list.add(nom);
+        list.add(avatar);
+
+        for (var h = 0; h < classlor.length; h++) {
+          var oeuvre, dimension, imageUrl;
+          var case1 = classlor[h].children[0];
+          var img = case1.getElementsByTagName("img");
+          var h2 = case1.getElementsByTagName("h2");
+          var h4 = case1.getElementsByTagName("h4")[0].children;
+
+          for (var image in img) {
+            imageUrl = (image.attributes['src'] != null)
+                ? image.attributes['src']
+                : image.attributes['data-src'];
+          }
+
+          for (var h21 in h2) {
+            oeuvre ??= h21.text;
+          }
+
+          for (var h41 in h4) {
+            dimension ??= h41.text;
+          }
+
+          if (imageUrl != null) {
+            if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
+              html.ImageElement image = html.ImageElement(
+                  src:
+                      'https://i.pinimg.com/736x/aa/be/42/aabe42b5ab769266d9cf575fea5ff4aa.jpg');
+              await image.onLoad.first;
+              PaletteGenerator palette = await generatePalette(image);
+
+              /* var paletteGenerator = await generatePalette(imageUrl);
+              print(paletteGenerator.value); */
+
+              counter++;
+              list.add(counter);
+              list.add(oeuvre);
+              list.add(imageUrl.toString());
+              list.add(dimension);
+            }
+          }
+        }
+
+        print(list.toString());
+
+        return [nom.toString()];
+      } catch (Exception) {
+        return ['', '', 'ERROR!'];
       }
     }
     return ['', '', 'ERROR STATUS CODE WASNT 200!'];
   }
-
-  // Future<void> downloadAndSaveImage(String url, String fileName) async {
-  //   final response = await http.get(Uri.parse(url));
-  //   final file = File('$fileName.glb');
-  //   await file.writeAsBytes(response.bodyBytes);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -2957,9 +2996,12 @@ class _MyAppState extends State<MyApp> {
                   isLoading = true;
                 });
 
+                final response = [];
                 // Awaiting for web scraping function
                 // to return list of strings
-                final response = await extractData("");
+                for (int k = 0; k < users.length; k++) {
+                  response.add(await extractData(k));
+                }
 
                 // Setting the received strings to be
                 // displayed and making isLoading false
