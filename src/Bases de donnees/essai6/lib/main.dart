@@ -1,44 +1,54 @@
 // @dart=2.9
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:core';
-import 'dart:html' as html;
-import 'dart:html';
-import 'dart:math' as math;
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+import 'package:flutter_image/flutter_image.dart';
+import 'package:image/image.dart' as img;
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:color_extract/color_extract.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
+  /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  ); */
   runApp(MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.green[100],
         primaryColor: Colors.green,
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.green),
       ),
-      home: const MyApp()));
+      home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key key}) : super(key: key);
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  PaletteGenerator _paletteGenerator;
 // Strings to store the extracted Article titles
   String result1 = 'Result 1';
+
+  final String url =
+      'https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/51fidJPxdzL._AC_SX466_.jpg';
 
 // boolean to show CircularProgressIndication
 // while Web Scraping awaits
@@ -2835,51 +2845,140 @@ class _MyAppState extends State<MyApp> {
     780143
   ];
 
-  Color col = Colors.black38;
+  var col = Colors.black26;
 
-  Future<ImageData> getImageData(html.ImageElement image) async {
-    html.CanvasElement canvas =
-        html.CanvasElement(width: image.width, height: image.height);
-    html.CanvasRenderingContext2D context = canvas.getContext('2d');
-    context.drawImage(image, 0, 0);
-    return context.getImageData(0, 0, image.width, image.height);
-  }
+  final _picker = ImagePicker();
+  Image _image;
+  List<Color> _colors = [];
 
-  Rect roundedRect(Rect rect) {
-    int left = (rect.left / 2).floor() * 2;
-    int top = (rect.top / 2).floor() * 2;
-    int right = (rect.right / 2).ceil() * 2;
-    int bottom = (rect.bottom / 2).ceil() * 2;
-    return Rect.fromLTRB(
-        left.toDouble(), top.toDouble(), right.toDouble(), bottom.toDouble());
-  }
+  Uint8List _imageBytes;
 
-  /* Future<Color> generatePalette(String url) async {
-    var dominantColor, firstColor;
+  /* Future<List> _generatePalette() async {
+    Image i = Image.network(
+      widget.url,
+      scale: 2.0,
+    );
+    ImageProvider ip = i.image;
     try {
-      ImageProvider imageProvider = NetworkImage(url);
-      PaletteGenerator paletteGenerator =
-          await PaletteGenerator.fromImageProvider(imageProvider,
-              maximumColorCount: 5);
-      dominantColor = paletteGenerator.dominantColor.color;
-      List<Color> topColors = paletteGenerator.colors.toList();
-      firstColor = topColors[0];
+      _paletteGenerator =
+          await PaletteGenerator.fromImageProvider(ip, maximumColorCount: 5);
+      setState(() {
+        _colors = _paletteGenerator.colors.toList();
+      });
     } catch (Exception) {
-      print(Exception.toString());
+      print(Exception().toString());
     }
-    return col;
+    return _colors;
   } */
 
-  Future<PaletteGenerator> generatePalette(html.ImageElement image) async {
-    ImageData imageData = await getImageData(image);
-    Rect visibleRect =
-        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
-    Rect roundedVisibleRect = roundedRect(visibleRect);
-    ui.Image resizedImage = await decodeImageFromPixels(
-        imageData.data.buffer.asUint8List(), imageData.width, imageData.height);
+  Rect region;
+  final Size imageSize = Size(400, 400);
+  String directory =
+      'C:/Users/chris/Documents/GitHub/420-204-RE-projet-artem/src/Bases_de_donnees/essai6';
 
-    ui.Image croppedImage = await cropImage(resizedImage, roundedVisibleRect);
-    return PaletteGenerator.fromImage(croppedImage);
+  Future<File> saveNetworkImageToFile(String imageUrl, String fileName) async {
+    final response = await http.get(Uri.parse(imageUrl));
+    final bytes = (response.statusCode == 200) ? response.bodyBytes : null;
+
+    final imageFile = File('$directory/$fileName');
+
+    await imageFile.writeAsBytes(bytes);
+
+    print(imageFile);
+
+    return imageFile;
+  }
+
+  /* @override
+  void initState() {
+    super.initState();
+    region = Offset.zero & imageSize;
+    _updatePaletteGenerator(region);
+  } */
+
+  /* Future<void> _updatePaletteGenerator(Rect newRegion) async {
+    var image = NetworkImage(url, scale: 2.0);
+    _paletteGenerator = await PaletteGenerator.fromImageProvider(
+      image,
+      size: imageSize,
+      region: newRegion,
+      maximumColorCount: 20,
+    );
+    setState(() {});
+  } */
+
+  /* Future<void> _getColors() async {
+    final decodedImage = img.decodeImage(_imageBytes.toList());
+    final pixels = decodedImage.data;
+
+    final colors = <Color>{};
+    for (var i = 0; i < pixels.length; i += 4) {
+      colors.add(Color.fromARGB(
+        255,
+        pixels.elementAt(i) as int,
+        pixels.elementAt(i + 1) as int,
+        pixels.elementAt(i + 2) as int,
+      ));
+    }
+
+    setState(() {
+      _colors = colors.toList();
+    });
+  } */
+
+  Uint8List uint;
+
+  var path = "images/chat1.jpg";
+
+  Future<void> _myGeneratePalette() async {
+    /* final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery); */
+
+    Image im = Image(
+      image: AssetImage(path),
+      height: 224,
+      width: 348,
+    );
+
+    ImageProvider imPro = im.image;
+
+    _paletteGenerator = await PaletteGenerator.fromImageProvider(imPro);
+
+    var colors = _paletteGenerator.lightVibrantColor.color;
+
+    var red = colors.red;
+    var green = colors.green;
+    var blue = colors.blue;
+    var alpha = colors.alpha;
+
+    img.ColorRgba8 c = img.ColorRgba8(red, green, blue, alpha);
+
+    print(red.toString() + ":" + green.toString() + ":" + blue.toString());
+    print(colors);
+    print(c.data);
+
+    /* final syncPath = await path;
+
+    //await File(syncPath).exists();
+    File(syncPath).existsSync();
+
+    var file = File(path);
+    if (await file.exists()) {
+      print(1);
+    } else {
+      print(2);
+    }
+    var imageBytes = await file.readAsBytes();
+    var image = await decodeImageFromList(imageBytes);
+    var paletteGenerator = await PaletteGenerator.fromImage(
+      image,
+      maximumColorCount: 20,
+    ); */
+
+    /* final File fil = File('C:/Users/chris/Desktop/chat1.jpg');
+    final imageProvider = FileImage(fil, scale: 2.0);
+    _paletteGenerator = await PaletteGenerator.fromImageProvider(imageProvider);
+    setState(() {}); // update the UI with the new colors */
   }
 
   Future<List<String>> extractData(int k) async {
@@ -2887,8 +2986,8 @@ class _MyAppState extends State<MyApp> {
     final response = await http.Client().get(Uri.parse(
         'http://www.saatchiart.com/account/artworks/${users.elementAt(k)}'));
 
-    DatabaseReference db =
-        FirebaseDatabase.instance.ref("users/" + users.elementAt(k).toString());
+    /* DatabaseReference db =
+        FirebaseDatabase.instance.ref("users/" + users.elementAt(k).toString()); */
 
     // Status Code 200 means response has been received successfully
     if (response.statusCode == 200) {
@@ -2938,11 +3037,12 @@ class _MyAppState extends State<MyApp> {
 
           if (imageUrl != null) {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
-              html.ImageElement image = html.ImageElement(
-                  src:
-                      'https://i.pinimg.com/736x/aa/be/42/aabe42b5ab769266d9cf575fea5ff4aa.jpg');
-              await image.onLoad.first;
-              PaletteGenerator palette = await generatePalette(image);
+              await _myGeneratePalette();
+              print(
+                _paletteGenerator.colors.map((color) {
+                  return Container(color: color);
+                }).toList(),
+              );
 
               /* var paletteGenerator = await generatePalette(imageUrl);
               print(paletteGenerator.value); */
@@ -2952,11 +3052,13 @@ class _MyAppState extends State<MyApp> {
               list.add(oeuvre);
               list.add(imageUrl.toString());
               list.add(dimension);
+
+              saveNetworkImageToFile(url, "image" + counter.toString());
             }
           }
         }
 
-        print(list.toString());
+        //print(list.toString());
 
         return [nom.toString()];
       } catch (Exception) {
