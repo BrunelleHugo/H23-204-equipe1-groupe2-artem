@@ -17,6 +17,10 @@ import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:chalkdart/chalk.dart';
+
+import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:color_extract/color_extract.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:html/parser.dart' as parser;
@@ -44,6 +48,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   PaletteGenerator _paletteGenerator;
+
 // Strings to store the extracted Article titles
   String result1 = 'Result 1';
 
@@ -53,6 +58,8 @@ class _MyAppState extends State<MyApp> {
 // boolean to show CircularProgressIndication
 // while Web Scraping awaits
   bool isLoading = false;
+
+  Uint8List uint;
 
   List<int> users = [
     25901,
@@ -2845,34 +2852,6 @@ class _MyAppState extends State<MyApp> {
     780143
   ];
 
-  var col = Colors.black26;
-
-  final _picker = ImagePicker();
-  Image _image;
-  List<Color> _colors = [];
-
-  Uint8List _imageBytes;
-
-  /* Future<List> _generatePalette() async {
-    Image i = Image.network(
-      widget.url,
-      scale: 2.0,
-    );
-    ImageProvider ip = i.image;
-    try {
-      _paletteGenerator =
-          await PaletteGenerator.fromImageProvider(ip, maximumColorCount: 5);
-      setState(() {
-        _colors = _paletteGenerator.colors.toList();
-      });
-    } catch (Exception) {
-      print(Exception().toString());
-    }
-    return _colors;
-  } */
-
-  Rect region;
-  final Size imageSize = Size(400, 400);
   String directory =
       'C:/Users/chris/Documents/GitHub/420-204-RE-projet-artem/src/Bases_de_donnees/essai6';
 
@@ -2884,58 +2863,26 @@ class _MyAppState extends State<MyApp> {
 
     await imageFile.writeAsBytes(bytes);
 
-    print(imageFile);
+    Image im = Image.file(imageFile);
+
+    ImageProvider imPro = im.image;
+
+    var paletteGenerator = await PaletteGenerator.fromImageProvider(imPro);
+
+    var colors = paletteGenerator.colors;
+
+    for (Color col in colors) {
+      print(chalk.rgb(col.red, col.green, col.blue)(col.toString()));
+    }
+
+    //print(imageFile);
 
     return imageFile;
   }
 
-  /* @override
-  void initState() {
-    super.initState();
-    region = Offset.zero & imageSize;
-    _updatePaletteGenerator(region);
-  } */
-
-  /* Future<void> _updatePaletteGenerator(Rect newRegion) async {
-    var image = NetworkImage(url, scale: 2.0);
-    _paletteGenerator = await PaletteGenerator.fromImageProvider(
-      image,
-      size: imageSize,
-      region: newRegion,
-      maximumColorCount: 20,
-    );
-    setState(() {});
-  } */
-
-  /* Future<void> _getColors() async {
-    final decodedImage = img.decodeImage(_imageBytes.toList());
-    final pixels = decodedImage.data;
-
-    final colors = <Color>{};
-    for (var i = 0; i < pixels.length; i += 4) {
-      colors.add(Color.fromARGB(
-        255,
-        pixels.elementAt(i) as int,
-        pixels.elementAt(i + 1) as int,
-        pixels.elementAt(i + 2) as int,
-      ));
-    }
-
-    setState(() {
-      _colors = colors.toList();
-    });
-  } */
-
-  Uint8List uint;
-
-  var path = "images/chat1.jpg";
-
-  Future<void> _myGeneratePalette() async {
-    /* final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery); */
-
+  Future<void> _myGeneratePalette(int counter) async {
     Image im = Image(
-      image: AssetImage(path),
+      image: AssetImage("images/chat1.jpg"),
       height: 224,
       width: 348,
     );
@@ -2944,42 +2891,38 @@ class _MyAppState extends State<MyApp> {
 
     _paletteGenerator = await PaletteGenerator.fromImageProvider(imPro);
 
-    var colors = _paletteGenerator.lightVibrantColor.color;
+    var colors = _paletteGenerator.colors.elementAt(counter);
 
     var red = colors.red;
     var green = colors.green;
     var blue = colors.blue;
     var alpha = colors.alpha;
 
-    img.ColorRgba8 c = img.ColorRgba8(red, green, blue, alpha);
+    img.ColorRgb8 c = img.ColorRgb8(red, green, blue);
 
-    print(red.toString() + ":" + green.toString() + ":" + blue.toString());
-    print(colors);
-    print(c.data);
+    String cd = ('#${colors.red + colors.green + colors.blue}');
 
-    /* final syncPath = await path;
-
-    //await File(syncPath).exists();
-    File(syncPath).existsSync();
-
-    var file = File(path);
-    if (await file.exists()) {
-      print(1);
-    } else {
-      print(2);
-    }
-    var imageBytes = await file.readAsBytes();
-    var image = await decodeImageFromList(imageBytes);
-    var paletteGenerator = await PaletteGenerator.fromImage(
-      image,
-      maximumColorCount: 20,
-    ); */
-
-    /* final File fil = File('C:/Users/chris/Desktop/chat1.jpg');
-    final imageProvider = FileImage(fil, scale: 2.0);
-    _paletteGenerator = await PaletteGenerator.fromImageProvider(imageProvider);
-    setState(() {}); // update the UI with the new colors */
+    //print(red.toString() + ":" + green.toString() + ":" + blue.toString());
+    //print(c.data);
+    print(chalk.rgb(red, green, blue)("YES"));
   }
+
+  /* Future<void> _detectObjects() async {
+    FirebaseVisionObjectDetectorOptions options =
+        new FirebaseVisionObjectDetectorOptions.Builder()
+                .setDetectorMode(FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE)
+                .enableMultipleObjects()
+                .enableClassification()  // Optional
+                .build();
+    final imageFile = await File('$im');
+    if (imageFile != null) {
+      final inputImage = InputImage.fromFile(imageFile);
+      final objectDetector = GoogleMlKit.instance.objectDetector();
+      final RecognisedObjectList objects =
+          await objectDetector.processImage(inputImage);
+      // Use the detected objects in your app
+    }
+  } */
 
   Future<List<String>> extractData(int k) async {
     // Getting the response from the targeted url
@@ -3037,23 +2980,20 @@ class _MyAppState extends State<MyApp> {
 
           if (imageUrl != null) {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
-              await _myGeneratePalette();
-              print(
-                _paletteGenerator.colors.map((color) {
-                  return Container(color: color);
-                }).toList(),
-              );
+              counter++;
+
+              saveNetworkImageToFile(imageUrl, "image" + counter.toString());
+
+              await _myGeneratePalette(counter);
+              //print(_paletteGenerator.colors.map((color) {return Container(color: color);}).toList());
 
               /* var paletteGenerator = await generatePalette(imageUrl);
               print(paletteGenerator.value); */
 
-              counter++;
               list.add(counter);
               list.add(oeuvre);
               list.add(imageUrl.toString());
               list.add(dimension);
-
-              saveNetworkImageToFile(url, "image" + counter.toString());
             }
           }
         }
