@@ -8,8 +8,6 @@ import 'dart:ui' as ui;
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -19,13 +17,10 @@ import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-
 import 'package:chalkdart/chalk.dart';
 
-/* import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart'; */
+import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:color_extract/color_extract.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:html/parser.dart' as parser;
@@ -34,9 +29,9 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
+  /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  ); */
   runApp(MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.green[100],
@@ -65,9 +60,6 @@ class _MyAppState extends State<MyApp> {
   bool isLoading = false;
 
   Uint8List uint;
-  File imageFile;
-
-  final dir = Directory.current;
 
   List<int> users = [
     25901,
@@ -2860,22 +2852,30 @@ class _MyAppState extends State<MyApp> {
     780143
   ];
 
+  String directory =
+      'C:/Users/chris/Documents/GitHub/420-204-RE-projet-artem/src/Bases_de_donnees/essai6';
+
   Future<File> saveNetworkImageToFile(String imageUrl, String fileName) async {
     final response = await http.get(Uri.parse(imageUrl));
-    uint = (response.statusCode == 200) ? response.bodyBytes : null;
+    final bytes = (response.statusCode == 200) ? response.bodyBytes : null;
 
-    imageFile = File(join(dir.path, 'images', fileName));
-    await imageFile.writeAsBytes(uint);
+    final imageFile = File('$directory/$fileName');
+
+    await imageFile.writeAsBytes(bytes);
 
     Image im = Image.file(imageFile);
+
     ImageProvider imPro = im.image;
 
     var paletteGenerator = await PaletteGenerator.fromImageProvider(imPro);
+
     var colors = paletteGenerator.colors;
 
     for (Color col in colors) {
       print(chalk.rgb(col.red, col.green, col.blue)(col.toString()));
     }
+
+    //print(imageFile);
 
     return imageFile;
   }
@@ -2904,7 +2904,7 @@ class _MyAppState extends State<MyApp> {
 
     //print(red.toString() + ":" + green.toString() + ":" + blue.toString());
     //print(c.data);
-    //print(chalk.rgb(red, green, blue)("YES"));
+    print(chalk.rgb(red, green, blue)("YES"));
   }
 
   /* Future<void> _detectObjects() async {
@@ -2923,26 +2923,6 @@ class _MyAppState extends State<MyApp> {
       // Use the detected objects in your app
     }
   } */
-
-  Future<void> _detectObjects() async {
-    try {
-      final FirebaseVisionImage visionImage =
-          FirebaseVisionImage.fromFile(imageFile);
-      final ImageLabeler labeler = FirebaseVision.instance.imageLabeler();
-      final List<ImageLabel> labels = await labeler.processImage(visionImage);
-
-      for (ImageLabel label in labels) {
-        final String text = label.text;
-        final double confidence = label.confidence;
-
-        print('$text ($confidence)');
-      }
-
-      labeler.close();
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
 
   Future<List<String>> extractData(int k) async {
     // Getting the response from the targeted url
@@ -3002,11 +2982,13 @@ class _MyAppState extends State<MyApp> {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
               counter++;
 
-              await saveNetworkImageToFile(imageUrl, "image${k}_$counter");
+              saveNetworkImageToFile(imageUrl, "image" + counter.toString());
 
-              //await _myGeneratePalette(counter);
+              await _myGeneratePalette(counter);
+              //print(_paletteGenerator.colors.map((color) {return Container(color: color);}).toList());
 
-              await _detectObjects();
+              /* var paletteGenerator = await generatePalette(imageUrl);
+              print(paletteGenerator.value); */
 
               list.add(counter);
               list.add(oeuvre);

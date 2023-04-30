@@ -70,8 +70,7 @@ class DefaultFirebaseOptions {
     projectId: 'artemfirebase',
     databaseURL: 'https://artemfirebase-default-rtdb.firebaseio.com',
     storageBucket: 'artemfirebase.appspot.com',
-    iosClientId:
-        '1023875049222-8rtrr0pgsdk7qhe1p89bjhdsng1g3beo.apps.googleusercontent.com',
+    iosClientId: '1023875049222-8rtrr0pgsdk7qhe1p89bjhdsng1g3beo.apps.googleusercontent.com',
     iosBundleId: 'com.example.essai5',
   );
 
@@ -82,8 +81,7 @@ class DefaultFirebaseOptions {
     projectId: 'artemfirebase',
     databaseURL: 'https://artemfirebase-default-rtdb.firebaseio.com',
     storageBucket: 'artemfirebase.appspot.com',
-    iosClientId:
-        '1023875049222-8rtrr0pgsdk7qhe1p89bjhdsng1g3beo.apps.googleusercontent.com',
+    iosClientId: '1023875049222-8rtrr0pgsdk7qhe1p89bjhdsng1g3beo.apps.googleusercontent.com',
     iosBundleId: 'com.example.essai5',
   );
 }
