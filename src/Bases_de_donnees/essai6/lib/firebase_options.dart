@@ -44,32 +44,32 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCIliSNkJYk9p9OM1ev76MnoejxxftV7JI',
-    appId: '1:1023875049222:web:c17d8381d5878553a22087',
-    messagingSenderId: '1023875049222',
-    projectId: 'artemfirebase',
-    authDomain: 'artemfirebase.firebaseapp.com',
-    databaseURL: 'https://artemfirebase-default-rtdb.firebaseio.com',
-    storageBucket: 'artemfirebase.appspot.com',
-    measurementId: 'G-1YR93RT252',
+    apiKey: "AIzaSyBrbdh0xhAFN3msNPXvmgp-dtISUcp0xkk",
+    authDomain: "finalartem-483ea.firebaseapp.com",
+    databaseURL: "https://finalartem-483ea-default-rtdb.firebaseio.com",
+    projectId: "finalartem-483ea",
+    storageBucket: "finalartem-483ea.appspot.com",
+    messagingSenderId: "641411852224",
+    appId: "1:641411852224:web:aa1a305b3b3f8822f5ca25",
+    measurementId: "G-JSV8G943G6",
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCoxbx90NhZ5eR-88vkJ_YWDXGidhSGL50',
-    appId: '1:1023875049222:android:411152b1f79175c5a22087',
-    messagingSenderId: '1023875049222',
-    projectId: 'artemfirebase',
-    databaseURL: 'https://artemfirebase-default-rtdb.firebaseio.com',
-    storageBucket: 'artemfirebase.appspot.com',
+    apiKey: 'AIzaSyDNgqsyl4WMQQa2Gk8X1Bfpm4QbdQURc7w',
+    appId: '1:641411852224:android:4d347403291eade8f5ca25',
+    messagingSenderId: '641411852224',
+    projectId: 'finalartem-483e',
+    databaseURL: 'https://finalartem-483ea-default-rtdb.firebaseio.com/',
+    storageBucket: 'finalartem-483ea.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDi5Ba6vf-zWNcWlYEPbhhaN-Cn7OJd11g',
     appId: '1:1023875049222:ios:e9229f81a6d4775aa22087',
-    messagingSenderId: '1023875049222',
+    messagingSenderId: '641411852224',
     projectId: 'artemfirebase',
     databaseURL: 'https://artemfirebase-default-rtdb.firebaseio.com',
-    storageBucket: 'artemfirebase.appspot.com',
+    storageBucket: 'finalartem-483ea.appspot.com',
     iosClientId:
         '1023875049222-8rtrr0pgsdk7qhe1p89bjhdsng1g3beo.apps.googleusercontent.com',
     iosBundleId: 'com.example.essai5',
@@ -78,10 +78,10 @@ class DefaultFirebaseOptions {
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDi5Ba6vf-zWNcWlYEPbhhaN-Cn7OJd11g',
     appId: '1:1023875049222:ios:e9229f81a6d4775aa22087',
-    messagingSenderId: '1023875049222',
+    messagingSenderId: '641411852224',
     projectId: 'artemfirebase',
     databaseURL: 'https://artemfirebase-default-rtdb.firebaseio.com',
-    storageBucket: 'artemfirebase.appspot.com',
+    storageBucket: 'finalartem-483ea.appspot.com',
     iosClientId:
         '1023875049222-8rtrr0pgsdk7qhe1p89bjhdsng1g3beo.apps.googleusercontent.com',
     iosBundleId: 'com.example.essai5',
