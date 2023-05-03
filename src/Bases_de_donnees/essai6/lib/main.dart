@@ -39,7 +39,7 @@ void main() async {
   runApp(
     MaterialApp(
       theme: ThemeData(
-        colorSchemeSeed: Colors.green[100],
+        scaffoldBackgroundColor: Colors.green[100],
         primaryColor: Colors.green,
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.green),
       ),
@@ -71,8 +71,6 @@ class _MyAppState extends State<MyApp> {
   Uint8List uint;
   File imageFile;
 
-  final dir = Directory.current;
-
   List<int> users = [
     503,
     400553,
@@ -88,10 +86,11 @@ class _MyAppState extends State<MyApp> {
   ];
 
   Future<File> saveNetworkImageToFile(String imageUrl, String fileName) async {
+    var directory = getExternalStorageDirectory();
     final response = await http.get(Uri.parse(imageUrl));
     uint = ((response.statusCode == 200) ? response.bodyBytes : null);
 
-    imageFile = File(join(dir.path, 'images', fileName));
+    imageFile = File(join(directory.toString(), 'images', fileName));
     await imageFile.writeAsBytes(uint);
 
     Image im = Image.file(imageFile);
@@ -253,7 +252,7 @@ class _MyAppState extends State<MyApp> {
     return ['', '', 'ERROR STATUS CODE WASNT 200!'];
   }
 
-  @override
+  /* @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -282,9 +281,10 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
     );
-  }
+  } */
 
-  /* Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -340,6 +340,4 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-}
- */
 }
