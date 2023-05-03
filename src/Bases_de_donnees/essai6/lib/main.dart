@@ -6,11 +6,12 @@ import 'dart:core';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:essai6/firebase_options.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
-import 'firebase_options.dart';
+/* import 'firebase_options.dart';*/
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -34,16 +35,17 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MaterialApp(
+  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(
+    MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.green[100],
         primaryColor: Colors.green,
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.green),
       ),
-      home: MyApp()));
+      home: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -69,8 +71,6 @@ class _MyAppState extends State<MyApp> {
   Uint8List uint;
   File imageFile;
 
-  final dir = Directory.current;
-
   List<int> users = [
     236057,
     405418,
@@ -86,10 +86,11 @@ class _MyAppState extends State<MyApp> {
   ];
 
   Future<File> saveNetworkImageToFile(String imageUrl, String fileName) async {
+    var directory = getExternalStorageDirectory();
     final response = await http.get(Uri.parse(imageUrl));
-    uint = (response.statusCode == 200) ? response.bodyBytes : null;
+    uint = ((response.statusCode == 200) ? response.bodyBytes : null);
 
-    imageFile = File(join(dir.path, 'images', fileName));
+    imageFile = File(join(directory.toString(), 'images', fileName));
     await imageFile.writeAsBytes(uint);
 
     Image im = Image.file(imageFile);
@@ -250,6 +251,37 @@ class _MyAppState extends State<MyApp> {
     }
     return ['', '', 'ERROR STATUS CODE WASNT 200!'];
   }
+
+  /* @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () async {
+            // Setting isLoading true to show the loader
+            setState(() {
+              isLoading = true;
+            });
+
+            final response = [];
+            // Awaiting for web scraping function
+            // to return list of strings
+            for (int k = 0; k < users.length; k++) {
+              response.add(await extractData(k));
+            }
+
+            // Setting the received strings to be
+            // displayed and making isLoading false
+            // to hide the loader
+            setState(() {
+              result1 = response[0];
+              isLoading = false;
+            });
+          },
+        ),
+      ],
+    );
+  } */
 
   @override
   Widget build(BuildContext context) {
