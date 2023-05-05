@@ -14,13 +14,14 @@ import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 /* import 'firebase_options.dart';*/
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:postgres/postgres.dart';
 
 import 'package:flutter_image/flutter_image.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import 'package:chalkdart/chalk.dart';
@@ -28,14 +29,27 @@ import 'package:chalkdart/chalk.dart';
 /* import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart'; */
 import 'package:color_extract/color_extract.dart';
+import 'package:color_palette_generator/src/color_palette_generator_base.dart';
+import 'package:color_thief_flutter/color_thief_flutter.dart';
+import 'package:color_thief_flutter/utils.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
+final connect_computer = PostgreSQLConnection(
+  '::1',
+  5432,
+  'postgres',
+  username: 'postgres',
+  password: 'root',
+);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await connect_computer.open();
+
   runApp(
     MaterialApp(
       theme: ThemeData(
@@ -85,52 +99,48 @@ class _MyAppState extends State<MyApp> {
     236057
   ];
 
-  Future<File> saveNetworkImageToFile(String imageUrl, String fileName) async {
-    var directory = getExternalStorageDirectory();
+  Future<void> saveNetworkImageToFile(String imageUrl, String fileName) async {
     final response = await http.get(Uri.parse(imageUrl));
     uint = ((response.statusCode == 200) ? response.bodyBytes : null);
 
-    imageFile = File(join(directory.toString(), 'images', fileName));
-    await imageFile.writeAsBytes(uint);
+    /* File imageFile = File(path.join(dir, 'images', fileName));
+    await imageFile.writeAsBytes(uint); */
 
-    Image im = Image.file(imageFile);
+    Image im = Image.memory(
+      uint,
+      scale: 2.0,
+    );
     ImageProvider imPro = im.image;
 
-    var paletteGenerator = await PaletteGenerator.fromImageProvider(imPro);
+    var paletteGenerator =
+        await PaletteGenerator.fromImageProvider(imPro, maximumColorCount: 5);
     var colors = paletteGenerator.colors;
 
-    for (Color col in colors) {
-      print(chalk.rgb(col.red, col.green, col.blue)(col.toString()));
-    }
+    print(fileName);
 
-    return imageFile;
+    for (Color col in colors) {
+      print(chalk.rgb(col.red, col.green, col.blue)(
+          '(${col.red}, ${col.green}, ${col.blue})'));
+    }
   }
 
   Future<void> _myGeneratePalette(int counter) async {
     Image im = Image(
       image: AssetImage("images/chat1.jpg"),
-      height: 224,
-      width: 348,
+      height: 2048,
+      width: 2048,
     );
 
     ImageProvider imPro = im.image;
 
-    _paletteGenerator = await PaletteGenerator.fromImageProvider(imPro);
+    _paletteGenerator =
+        await PaletteGenerator.fromImageProvider(imPro, maximumColorCount: 5);
 
-    var colors = _paletteGenerator.colors.elementAt(counter);
+    var colors = _paletteGenerator.colors;
 
-    var red = colors.red;
-    var green = colors.green;
-    var blue = colors.blue;
-    var alpha = colors.alpha;
-
-    img.ColorRgb8 c = img.ColorRgb8(red, green, blue);
-
-    String cd = ('#${colors.red + colors.green + colors.blue}');
-
-    //print(red.toString() + ":" + green.toString() + ":" + blue.toString());
-    //print(c.data);
-    //print(chalk.rgb(red, green, blue)("YES"));
+    for (Color col in colors) {
+      print(chalk.rgb(col.red, col.green, col.blue)("YES"));
+    }
   }
 
   /* Future<void> _detectObjects() async {
@@ -153,7 +163,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> _detectObjects() async {
     try {
       final FirebaseVisionImage visionImage =
-          FirebaseVisionImage.fromFile(imageFile);
+          FirebaseVisionImage.fromBytes(uint, null);
       final ImageLabeler labeler = FirebaseVision.instance.imageLabeler();
       final List<ImageLabel> labels = await labeler.processImage(visionImage);
 
@@ -228,11 +238,15 @@ class _MyAppState extends State<MyApp> {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
               counter++;
 
+              await connect_computer.execute(
+                  'INSERT INTO users_compatible (id, compat) VALUES (@id, @compat)',
+                  substitutionValues: {'id': 0, 'compat': 0.7756225});
+
               await saveNetworkImageToFile(imageUrl, "image${k}_$counter");
 
               //await _myGeneratePalette(counter);
 
-              await _detectObjects();
+              //await _detectObjects();
 
               list.add(counter);
               list.add(oeuvre);
@@ -249,6 +263,7 @@ class _MyAppState extends State<MyApp> {
         return ['', '', 'ERROR!'];
       }
     }
+    await connect_computer.close();
     return ['', '', 'ERROR STATUS CODE WASNT 200!'];
   }
 
@@ -325,7 +340,7 @@ class _MyAppState extends State<MyApp> {
                 // displayed and making isLoading false
                 // to hide the loader
                 setState(() {
-                  result1 = response[0];
+                  result1 = "response[0]";
                   isLoading = false;
                 });
               },
