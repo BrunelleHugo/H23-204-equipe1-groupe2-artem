@@ -54,6 +54,7 @@ dependencies:
   path_provider: ^2.0.14
   shared_preferences: ^2.1.0
   postgres: ^2.6.1
+  googleapis: ^11.0.0
 
 dev_dependencies:
   flutter_test:

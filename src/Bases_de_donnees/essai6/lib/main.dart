@@ -1,41 +1,23 @@
 // @dart=2.9
 
-import 'dart:async';
 import 'dart:io';
 import 'dart:core';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 
-import 'package:essai6/firebase_options.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-
-/* import 'firebase_options.dart';*/
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:postgres/postgres.dart';
 
-import 'package:flutter_image/flutter_image.dart';
-import 'package:image/image.dart' as img;
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import 'package:chalkdart/chalk.dart';
 
-/* import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart'; */
-import 'package:color_extract/color_extract.dart';
-import 'package:color_palette_generator/src/color_palette_generator_base.dart';
-import 'package:color_thief_flutter/color_thief_flutter.dart';
-import 'package:color_thief_flutter/utils.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:googleapis/vision/v1.dart' as vis;
+
+import 'compatibilityusers.dart';
+
+import 'dart:convert';
 
 final connect_computer = PostgreSQLConnection(
   '::1',
@@ -72,6 +54,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   PaletteGenerator _paletteGenerator;
 
+  List<Color> colorPaletteUser;
+
 // Strings to store the extracted Article titles
   String result1 = 'Result 1';
 
@@ -103,9 +87,6 @@ class _MyAppState extends State<MyApp> {
     final response = await http.get(Uri.parse(imageUrl));
     uint = ((response.statusCode == 200) ? response.bodyBytes : null);
 
-    /* File imageFile = File(path.join(dir, 'images', fileName));
-    await imageFile.writeAsBytes(uint); */
-
     Image im = Image.memory(
       uint,
       scale: 2.0,
@@ -116,12 +97,8 @@ class _MyAppState extends State<MyApp> {
         await PaletteGenerator.fromImageProvider(imPro, maximumColorCount: 5);
     var colors = paletteGenerator.colors;
 
-    print(fileName);
-
-    for (Color col in colors) {
-      print(chalk.rgb(col.red, col.green, col.blue)(
-          '(${col.red}, ${col.green}, ${col.blue})'));
-    }
+    var col = paletteGenerator.dominantColor.color;
+    colorPaletteUser.add(col);
   }
 
   Future<void> _myGeneratePalette(int counter) async {
@@ -143,45 +120,9 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  /* Future<void> _detectObjects() async {
-    FirebaseVisionObjectDetectorOptions options =
-        new FirebaseVisionObjectDetectorOptions.Builder()
-                .setDetectorMode(FirebaseVisionObjectDetectorOptions.SINGLE_IMAGE_MODE)
-                .enableMultipleObjects()
-                .enableClassification()  // Optional
-                .build();
-    final imageFile = await File('$im');
-    if (imageFile != null) {
-      final inputImage = InputImage.fromFile(imageFile);
-      final objectDetector = GoogleMlKit.instance.objectDetector();
-      final RecognisedObjectList objects =
-          await objectDetector.processImage(inputImage);
-      // Use the detected objects in your app
-    }
-  } */
-
-  Future<void> _detectObjects() async {
-    try {
-      final FirebaseVisionImage visionImage =
-          FirebaseVisionImage.fromBytes(uint, null);
-      final ImageLabeler labeler = FirebaseVision.instance.imageLabeler();
-      final List<ImageLabel> labels = await labeler.processImage(visionImage);
-
-      for (ImageLabel label in labels) {
-        final String text = label.text;
-        final double confidence = label.confidence;
-
-        print('$text ($confidence)');
-      }
-
-      labeler.close();
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
   Future<List<String>> extractData(int k) async {
     // Getting the response from the targeted url
+    colorPaletteUser = [];
     final response = await http.Client().get(Uri.parse(
         'http://www.saatchiart.com/account/artworks/${users.elementAt(k)}'));
 
@@ -238,15 +179,25 @@ class _MyAppState extends State<MyApp> {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
               counter++;
 
-              await connect_computer.execute(
-                  'INSERT INTO users_compatible (id, compat) VALUES (@id, @compat)',
-                  substitutionValues: {'id': 0, 'compat': 0.7756225});
+              if (counter % 2 == 0) {
+                await connect_computer.execute(
+                    'INSERT INTO users_compatible (id, compat) VALUES (@id, @compat)',
+                    substitutionValues: {
+                      'id': 0,
+                      'compat': CompatibilityUsers.ensemble().elementAt(1),
+                    });
+              } else {
+                await connect_computer.execute(
+                    'INSERT INTO users_compatible (id, compat) VALUES (@id, @compat)',
+                    substitutionValues: {
+                      'id': 1,
+                      'compat': CompatibilityUsers.ensemble().elementAt(0),
+                    });
+              }
 
               await saveNetworkImageToFile(imageUrl, "image${k}_$counter");
 
               //await _myGeneratePalette(counter);
-
-              //await _detectObjects();
 
               list.add(counter);
               list.add(oeuvre);
@@ -256,47 +207,77 @@ class _MyAppState extends State<MyApp> {
           }
         }
 
-        //print(list.toString());
+        List c = colorPaletteUser;
+        String cc = "";
+        List compar = [];
 
-        return [nom.toString()];
+        List ind = [
+          0,
+          (c.length / 4).floor(),
+          (c.length / 2).floor(),
+          (3 * c.length / 4).floor(),
+          (c.length - 1)
+        ];
+
+        for (int i = 0; i < c.length; i++) {
+          cc += (chalk.rgb(c[i].red, c[i].green, c[i].blue)("ff "));
+          if (ind.contains(i)) {
+            compar.add([c[i].red, c[i].green, c[i].blue]);
+          }
+        }
+
+        print(cc);
+
+        List lor = [
+          [255, 0, 0],
+          [0, 255, 0],
+          [0, 0, 255],
+          [0, 0, 0],
+          [255, 255, 255],
+        ];
+
+        List d = [];
+        var m = 0;
+
+        for (List x in compar) {
+          d = [];
+          for (List f in lor) {
+            int counter = 0;
+            for (int i = 0; i < f.length; i++) {
+              counter += (f[i] - x[i]).abs();
+            }
+            d.add(counter);
+          }
+          d.sort();
+          m += d[0];
+        }
+
+        String kad = "", kaf = "";
+
+        for (List vf in lor) {
+          kaf += (chalk.rgb(vf[0], vf[1], vf[2])("gg "));
+        }
+
+        print(kaf);
+
+        for (List vh in compar) {
+          kad += (chalk.rgb(vh[0], vh[1], vh[2])("gg "));
+        }
+
+        print(kad);
+
+        print(m);
+        /* print(chalk.rgb(239, 255, 61)("gg"));
+        print(chalk.rgb(61, 255, 81)("gg"));
+        print(chalk.rgb(61, 255, 242)("gg")); */
+
+        //print(list.toString());
       } catch (Exception) {
-        return ['', '', 'ERROR!'];
+        print('ERROR!');
       }
     }
-    await connect_computer.close();
     return ['', '', 'ERROR STATUS CODE WASNT 200!'];
   }
-
-  /* @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ElevatedButton(
-          onPressed: () async {
-            // Setting isLoading true to show the loader
-            setState(() {
-              isLoading = true;
-            });
-
-            final response = [];
-            // Awaiting for web scraping function
-            // to return list of strings
-            for (int k = 0; k < users.length; k++) {
-              response.add(await extractData(k));
-            }
-
-            // Setting the received strings to be
-            // displayed and making isLoading false
-            // to hide the loader
-            setState(() {
-              result1 = response[0];
-              isLoading = false;
-            });
-          },
-        ),
-      ],
-    );
-  } */
 
   @override
   Widget build(BuildContext context) {
@@ -335,6 +316,8 @@ class _MyAppState extends State<MyApp> {
                 for (int k = 0; k < users.length; k++) {
                   response.add(await extractData(k));
                 }
+                await connect_computer.close();
+                print("finito");
 
                 // Setting the received strings to be
                 // displayed and making isLoading false
