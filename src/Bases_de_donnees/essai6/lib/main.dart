@@ -239,8 +239,8 @@ class _MyAppState extends State<MyApp> {
               counter++;
 
               await connect_computer.execute(
-                  'INSERT INTO users_compatible (id, compat) VALUES (@id, @compat)',
-                  substitutionValues: {'id': 0, 'compat': 0.7756225});
+                  'INSERT INTO users_compatible (id, avatar, palette, oeuvres, aimees, compat) VALUES (@id, @avatar, @palette, @oeuvres, @aimees, @compat)',
+                  substitutionValues: {'id': k, 'avatar': avatar, 'palette': , 'oeuvres': , 'aimees': , 'compat': 0.1});
 
               await saveNetworkImageToFile(imageUrl, "image${k}_$counter");
 
@@ -248,10 +248,10 @@ class _MyAppState extends State<MyApp> {
 
               //await _detectObjects();
 
-              list.add(counter);
-              list.add(oeuvre);
-              list.add(imageUrl.toString());
-              list.add(dimension);
+              list.add(counter); //nombre de l'image (1ere image = 0)
+              list.add(oeuvre); //description de l'image
+              list.add(imageUrl.toString()); //l'image
+              list.add(dimension); //dimensions de l'image
             }
           }
         }
