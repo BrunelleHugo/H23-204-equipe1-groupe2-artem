@@ -1,11 +1,11 @@
 DROP TABLE IF EXISTS users_compatible;
-DROP TYPE IF EXISTS oeuvre;
+DROP TABLE IF EXISTS oeuvre;
 
-CREATE TYPE oeuvre AS (
-    img TEXT,
+CREATE TABLE oeuvre (
+    img INT [],
     descrip TEXT,
-    couleurs INT[5][3],
-    dimensions DECIMAL[2]
+    couleurs TEXT,
+    dimensions TEXT
 );
 
 CREATE TABLE users_compatible (
@@ -14,8 +14,8 @@ CREATE TABLE users_compatible (
     mdp TEXT,
     nom TEXT,
     avatar TEXT,
-    palette INT[5][3],
-    oeuvres oeuvre[],
-    aimees oeuvre[],
+    palette INT,
+    oeuvres oeuvre [],
+    aimees oeuvre [],
     compat DECIMAL
 );
