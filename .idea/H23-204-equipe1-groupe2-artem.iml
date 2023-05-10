@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/windows/flutter/ephemeral/.plugin_symlinks/path_provider_windows/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/windows/flutter/ephemeral/.plugin_symlinks/path_provider_windows/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/windows/flutter/ephemeral/.plugin_symlinks/path_provider_windows/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/linux/flutter/ephemeral/.plugin_symlinks/path_provider_linux/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/windows/flutter/ephemeral/.plugin_symlinks/path_provider_windows/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/windows/flutter/ephemeral/.plugin_symlinks/path_provider_windows/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai6/windows/flutter/ephemeral/.plugin_symlinks/path_provider_windows/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai5/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai5/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/essai5/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/solution_peut-etre/untitled2/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/solution_peut-etre/untitled2/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Bases_de_donnees/solution_peut-etre/untitled2/.pub" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

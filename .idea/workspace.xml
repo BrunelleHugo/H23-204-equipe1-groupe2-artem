@@ -5,15 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4657626d-e05d-4094-90bf-95a2f7da0e0f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/H23-204-equipe1-groupe2-artem.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/H23-204-equipe1-groupe2-artem.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/windows/flutter/generated_plugins.cmake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/donnees_finales.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/interests.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/interests.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/linux/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/linux/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/linux/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/linux/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/linux/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/linux/flutter/generated_plugins.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/windows/flutter/generated_plugin_registrant.cc" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/windows/flutter/generated_plugin_registrant.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/windows/flutter/generated_plugin_registrant.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/windows/flutter/generated_plugin_registrant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/windows/flutter/generated_plugins.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bases_de_donnees/essai6/windows/flutter/generated_plugins.cmake" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,18 +35,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "io.flutter.reload.alreadyRun": "true",
-    "settings.editor.selected.configurable": "flutter.settings",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;flutter.settings&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter" temporary="true" nameIsGenerated="true">
       <option name="filePath" value="$PROJECT_DIR$/src/AndroidStudioProjects/test_artem/lib/main.dart" />
