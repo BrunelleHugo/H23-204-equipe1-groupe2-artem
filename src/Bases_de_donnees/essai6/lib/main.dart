@@ -83,7 +83,8 @@ class _MyAppState extends State<MyApp> {
     400553
   ];
 
-  Future<void> saveNetworkImageToFile(String imageUrl, String fileName) async {
+  Future<List<String>> saveNetworkImageToFile(
+      String imageUrl, String fileName) async {
     final response = await http.get(Uri.parse(imageUrl));
     uint = ((response.statusCode == 200) ? response.bodyBytes : null);
 
@@ -96,12 +97,19 @@ class _MyAppState extends State<MyApp> {
     var paletteGenerator =
         await PaletteGenerator.fromImageProvider(imPro, maximumColorCount: 5);
     var colors = paletteGenerator.colors;
+    List<String> hex;
+
+    for (Color color in colors) {
+      hex.add(color.value.toRadixString(16).toString());
+    }
 
     var col = paletteGenerator.dominantColor.color;
     colorPaletteUser.add(col);
+
+    return hex;
   }
 
-  Future<void> _myGeneratePalette(int counter) async {
+  /* Future<void> _myGeneratePalette(int counter) async {
     Image im = Image(
       image: AssetImage("images/chat1.jpg"),
       height: 2048,
@@ -118,16 +126,13 @@ class _MyAppState extends State<MyApp> {
     for (Color col in colors) {
       print(chalk.rgb(col.red, col.green, col.blue)("YES"));
     }
-  }
+  } */
 
   Future<List<String>> extractData(int k) async {
     // Getting the response from the targeted url
     colorPaletteUser = [];
     final response = await http.Client().get(Uri.parse(
         'http://www.saatchiart.com/account/artworks/${users.elementAt(k)}'));
-
-    /* DatabaseReference db =
-        FirebaseDatabase.instance.ref("users/" + users.elementAt(k).toString()); */
 
     // Status Code 200 means response has been received successfully
     if (response.statusCode == 200) {
@@ -179,11 +184,15 @@ class _MyAppState extends State<MyApp> {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
               counter++;
 
-              await connect_computer.execute(
-                  'INSERT INTO users_compatible (id, avatar, palette, oeuvres, aimees, compat) VALUES (@id, @avatar, @palette, @oeuvres, @aimees, @compat)',
-                  substitutionValues: {'id': k, 'avatar': avatar, 'palette': , 'oeuvres': , 'aimees': , 'compat': 0.1});
+              var c5 =
+                  await saveNetworkImageToFile(imageUrl, "image${k}_$counter");
 
-              await saveNetworkImageToFile(imageUrl, "image${k}_$counter");
+              await connect_computer.execute(
+                  'INSERT INTO oeuvre (img, descrip, couleurs, dimensions) VALUES (ARRAY $uint, @descrip, ${c5.elementAt(0)}, @dimensions)',
+                  substitutionValues: {
+                    'descrip': oeuvre.toString(),
+                    'dimensions': dimension
+                  });
 
               //await _myGeneratePalette(counter);
 
@@ -199,7 +208,7 @@ class _MyAppState extends State<MyApp> {
 
         List c = colorPaletteUser;
         String cc = "";
-        List compar = [];
+        List<List<int>> compar;
 
         List ind = [
           0,
@@ -211,12 +220,16 @@ class _MyAppState extends State<MyApp> {
 
         for (int i = 0; i < c.length; i++) {
           cc += (chalk.rgb(c[i].red, c[i].green, c[i].blue)("ff "));
-          if (ind.contains(i)) {
-            compar.add([c[i].red, c[i].green, c[i].blue]);
-          }
+        }
+
+        for (int j = 0; j < ind.length; j++) {
+          compar[j][0] = c[ind[j]].red;
+          compar[j][1] = c[ind[j]].green;
+          compar[j][2] = c[ind[j]].blue;
         }
 
         print(cc);
+        print(c.length);
 
         List lor = [
           [255, 0, 0],
@@ -257,11 +270,21 @@ class _MyAppState extends State<MyApp> {
         print(kad);
 
         print(m);
-        /* print(chalk.rgb(239, 255, 61)("gg"));
-        print(chalk.rgb(61, 255, 81)("gg"));
-        print(chalk.rgb(61, 255, 242)("gg")); */
 
-        //print(list.toString());
+        await connect_computer.execute(
+            'INSERT INTO users_compatible (id, email, mdp, nom, avatar, palette, compat) VALUES (@id, @email, @mdp, @nom, @avatar, @palette, @compat)',
+            substitutionValues: {
+              'id': k,
+              'email':
+                  "${nom.toString().replaceAll(' ', '.').toLowerCase()}@gmail.com",
+              'mdp': k.toString(),
+              'nom': nom.toString(),
+              'avatar': avatar.toString(),
+              'palette': 2,
+              /* 'oeuvres': ,
+              'aimees': , */
+              'compat': m
+            });
       } catch (Exception) {
         print('ERROR!');
       }
