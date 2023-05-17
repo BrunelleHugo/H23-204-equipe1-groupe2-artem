@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -8,42 +10,50 @@ class CompatibilityImage extends StatefulWidget {
   // Create a reference to the database
   final databaseRef = FirebaseDatabase.instance.reference();
 
-  static double total() {
-    final image = {
-      colours.black: 90 * colours.black.getColours(),
-      colours.green: 2 * colours.green.getColours(),
-      colours.violet: 1 * colours.violet.getColours(),
-      themes.nature: 59 * themes.nature.getThemes(),
-      themes.animals: 59 * themes.animals.getThemes(),
-      themes.dance: 59 * themes.dance.getThemes(),
-    };
+  static double total(Set base, Set p2) {
+    List lor = [
+      [0, 0, 0],
+      [0, 0, 255],
+      [0, 255, 0],
+      [255, 0, 0],
+      [255, 255, 255],
+    ];
 
-    final p1 = {
-      colours.blue,
-      colours.yellow,
-      colours.violet,
-      colours.pink,
-      colours.green,
-      themes.exotic,
-      themes.animals,
-      themes.people,
-      themes.sports,
-    };
+    List d1 = [];
+    var m1 = 0;
 
-    double som = 0.0, den = 0.0;
-
-    for (Enum value in p1) {
-      try {
-        som += image[value]!.toInt();
-      } catch (Exception) {}
+    for (List x in base) {
+      d1 = [];
+      for (List f in lor) {
+        int counter = 0;
+        for (int i = 0; i < f.length; i++) {
+          counter += (f[i] - x[i]).abs();
+        }
+        d1.add(counter);
+      }
+      d1.sort();
+      m1 += d1[d1.length - 1];
     }
 
-    final arr = (image.values);
-    for (int i = 0; i < arr.length; i++) {
-      den += arr.elementAt(i);
+    List d2 = [];
+    var m2 = 0;
+
+    for (List x in base) {
+      d2 = [];
+      for (List f in p2) {
+        int counter = 0;
+        for (int i = 0; i < f.length; i++) {
+          counter += (f[i] - x[i]).abs();
+        }
+        d2.add(counter);
+      }
+      d2.sort();
+      m2 += d2[0];
     }
 
-    return (som / den);
+    double ort = 1 - (m2 / m1);
+
+    return ort;
   }
 
   @override
@@ -52,11 +62,7 @@ class CompatibilityImage extends StatefulWidget {
         body: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Center(
-        child: Column(children: [
-          MaterialButton(onPressed: () async {
-            total();
-          })
-        ]),
+        child: Column(children: [MaterialButton(onPressed: () async {})]),
       ),
     ));
   }
@@ -65,44 +71,5 @@ class CompatibilityImage extends StatefulWidget {
   State<StatefulWidget> createState() {
     // TODO: implement createState
     throw UnimplementedError();
-  }
-}
-
-enum colours {
-  blue(1),
-  yellow(1),
-  red(1),
-  orange(1),
-  pink(1),
-  brown(1),
-  violet(1),
-  green(1),
-  black(1),
-  white(1);
-
-  final value;
-  const colours(this.value);
-  int getColours() {
-    return value;
-  }
-}
-
-enum themes {
-  nature(18),
-  animals(17),
-  people(19),
-  architecture(16),
-  exotic(17),
-  music(15),
-  dance(15),
-  sports(15),
-  cuisine(14),
-  technology(15),
-  cars(16);
-
-  final value;
-  const themes(this.value);
-  int getThemes() {
-    return value;
   }
 }

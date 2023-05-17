@@ -1,8 +1,12 @@
 // @dart=2.9
 
+import 'dart:collection';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:core';
 
+import 'package:essai6/compatibilityimage.dart';
+import 'package:googleapis/datastream/v1.dart';
 import 'package:postgres/postgres.dart';
 
 import 'package:flutter/services.dart';
@@ -55,6 +59,7 @@ class _MyAppState extends State<MyApp> {
   PaletteGenerator _paletteGenerator;
 
   List<Color> colorPaletteUser;
+  //List<String> hex = [];
 
 // Strings to store the extracted Article titles
   String result1 = 'Result 1';
@@ -83,8 +88,7 @@ class _MyAppState extends State<MyApp> {
     400553
   ];
 
-  Future<List<String>> saveNetworkImageToFile(
-      String imageUrl, String fileName) async {
+  Future<List> saveNetworkImageToFile(String imageUrl) async {
     final response = await http.get(Uri.parse(imageUrl));
     uint = ((response.statusCode == 200) ? response.bodyBytes : null);
 
@@ -97,16 +101,22 @@ class _MyAppState extends State<MyApp> {
     var paletteGenerator =
         await PaletteGenerator.fromImageProvider(imPro, maximumColorCount: 5);
     var colors = paletteGenerator.colors;
-    List<String> hex;
+    var collist = [];
 
     for (Color color in colors) {
-      hex.add(color.value.toRadixString(16).toString());
+      var red = color.red, green = color.green, blue = color.blue;
+      collist.add([red, green, blue]);
     }
+
+    /* for (Color color in colors) {
+      var h = color.value.toRadixString(16);
+      hex.add(h);
+    } */
 
     var col = paletteGenerator.dominantColor.color;
     colorPaletteUser.add(col);
 
-    return hex;
+    return collist;
   }
 
   /* Future<void> _myGeneratePalette(int counter) async {
@@ -131,6 +141,7 @@ class _MyAppState extends State<MyApp> {
   Future<List<String>> extractData(int k) async {
     // Getting the response from the targeted url
     colorPaletteUser = [];
+    List list = [];
     final response = await http.Client().get(Uri.parse(
         'http://www.saatchiart.com/account/artworks/${users.elementAt(k)}'));
 
@@ -141,7 +152,6 @@ class _MyAppState extends State<MyApp> {
       int counter = 0;
       try {
         // Scraping the first article title
-        List list = [];
         var classlor = document
             .getElementsByClassName("sc-1ypbzzj-4 sc-9pmg3r-2 cgnOZJ kpSjBp");
         var usagers = document.getElementsByTagName('img');
@@ -156,8 +166,11 @@ class _MyAppState extends State<MyApp> {
             break;
           }
         }
-        list.add(nom);
-        list.add(avatar);
+
+        var res = await http.get(Uri.parse(avatar));
+
+        /* list.add(nom);
+        list.add(((res.statusCode == 200) ? res.bodyBytes : null)); */
 
         for (var h = 0; h < classlor.length; h++) {
           var oeuvre, dimension, imageUrl;
@@ -184,31 +197,33 @@ class _MyAppState extends State<MyApp> {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
               counter++;
 
-              var c5 =
-                  await saveNetworkImageToFile(imageUrl, "image${k}_$counter");
+              //hex = [];
 
-              await connect_computer.execute(
-                  'INSERT INTO oeuvre (img, descrip, couleurs, dimensions) VALUES (ARRAY $uint, @descrip, ${c5.elementAt(0)}, @dimensions)',
+              var c5 = await saveNetworkImageToFile(imageUrl);
+
+              /* await connect_computer.execute(
+                  'INSERT INTO oeuvre (img, descrip, couleurs, dimensions) VALUES (ARRAY $uint, @descrip, ARRAY $c5, @dimensions)',
                   substitutionValues: {
                     'descrip': oeuvre.toString(),
                     'dimensions': dimension
-                  });
+                  }); */
 
               //await _myGeneratePalette(counter);
 
               //await _detectObjects();
 
-              list.add(counter); //nombre de l'image (1ere image = 0)
+              /* list.add(counter); //nombre de l'image (1ere image = 0)
               list.add(oeuvre); //description de l'image
               list.add(imageUrl.toString()); //l'image
-              list.add(dimension); //dimensions de l'image
+              list.add(dimension); //dimensions de l'image */
+              list.add([uint, oeuvre.toString(), c5, dimension]);
             }
           }
         }
 
         List c = colorPaletteUser;
         String cc = "";
-        List<List<int>> compar;
+        List compar = [];
 
         List ind = [
           0,
@@ -218,25 +233,25 @@ class _MyAppState extends State<MyApp> {
           (c.length - 1)
         ];
 
-        for (int i = 0; i < c.length; i++) {
-          cc += (chalk.rgb(c[i].red, c[i].green, c[i].blue)("ff "));
+        for (int j = 0; j < ind.length; j++) {
+          compar.add([c[ind[j]].red, c[ind[j]].green, c[ind[j]].blue]);
+          /* compar.elementAt(j).add(c[ind[j]].green);
+          compar.elementAt(j).add(c[ind[j]].blue); */
         }
 
-        for (int j = 0; j < ind.length; j++) {
-          compar[j][0] = c[ind[j]].red;
-          compar[j][1] = c[ind[j]].green;
-          compar[j][2] = c[ind[j]].blue;
+        for (int i = 0; i < ind.length; i++) {
+          cc += (chalk.rgb(compar[i][0], compar[i][1], compar[i][2])("ff "));
         }
 
         print(cc);
         print(c.length);
 
-        List lor = [
-          [255, 0, 0],
-          [0, 255, 0],
-          [0, 0, 255],
+        /* List lor = [
           [0, 0, 0],
-          [255, 255, 255],
+          [0, 0, 1],
+          [0, 1, 0],
+          [1, 0, 0],
+          [0, 1, 1],
         ];
 
         List d = [];
@@ -269,10 +284,13 @@ class _MyAppState extends State<MyApp> {
 
         print(kad);
 
-        print(m);
+        print(m); */
+
+        final h = jsonEncode(compar);
+        final li = jsonEncode(list);
 
         await connect_computer.execute(
-            'INSERT INTO users_compatible (id, email, mdp, nom, avatar, palette, compat) VALUES (@id, @email, @mdp, @nom, @avatar, @palette, @compat)',
+            'INSERT INTO users_compatible (id, email, mdp, nom, avatar, palette, oeuvres) VALUES (@id, @email, @mdp, @nom, @avatar, @palette, @oeuvres)',
             substitutionValues: {
               'id': k,
               'email':
@@ -280,16 +298,93 @@ class _MyAppState extends State<MyApp> {
               'mdp': k.toString(),
               'nom': nom.toString(),
               'avatar': avatar.toString(),
-              'palette': 2,
-              /* 'oeuvres': ,
-              'aimees': , */
-              'compat': m
+              'palette': h,
+              'oeuvres': li,
+              /* '{${hex[0]}, ${hex[1]}, ${hex[2]}, ${hex[3]}, ${hex[4]}}', */
+              /*'aimees': , */
             });
       } catch (Exception) {
-        print('ERROR!');
+        print(Exception.toString());
       }
     }
     return ['', '', 'ERROR STATUS CODE WASNT 200!'];
+  }
+
+  Future<List<String>> images_aimees() async {
+    var o = await connect_computer
+        .query('SELECT ALL oeuvres FROM users_compatible');
+    var p = await connect_computer
+        .query('SELECT ALL palette FROM users_compatible');
+
+    final oeuvres = o.map((row) => row[0]).toList();
+    final palette = p.map((row) => row[0]).toList();
+
+    Map<List, double> toile = {};
+
+    for (int i = 0; i < palette.length; i++) {
+      toile.clear();
+      for (int j = 0; j < oeuvres.length; j++) {
+        if (j != i) {
+          for (int l = 0; l < oeuvres[j].length; l++) {
+            toile[oeuvres[j][l]] = (CompatibilityImage.total(
+                (palette[i]).toSet(), (oeuvres[j][l][2]).toSet()));
+          }
+        }
+      }
+
+      var sortedMap = SplayTreeMap<List, double>.from(
+          toile, (a, b) => toile[a].compareTo(toile[b]));
+
+      List jasd = sortedMap.keys.toList();
+      jasd.reversed;
+
+      jasd = jasd.take(10).toList();
+
+      var l = jsonEncode(jasd);
+
+      await connect_computer.execute(
+          'UPDATE users_compatible SET aimees = @aimees WHERE id = @id',
+          substitutionValues: {'aimees': l, 'id': i});
+    }
+  }
+
+  Future<List<String>> interets_communs() async {
+    final p = await connect_computer
+        .query('SELECT ALL palette FROM users_compatible');
+
+    final a =
+        await connect_computer.query('SELECT ALL aimees FROM users_compatible');
+
+    final palette = p.map((row) => row[0]).toList();
+    final aimees = a.map((row) => row[0]).toList();
+
+    Map<int, double> match = {};
+
+    for (int i = 0; i < palette.length; i++) {
+      match.clear();
+      for (int j = 0; j < palette.length; j++) {
+        if (j != i) {
+          match[j] = (CompatibilityUsers.ensemble((palette[i]).toSet(),
+              (palette[j]).toSet(), aimees[i], aimees[j]));
+        }
+      }
+
+      var sortedMap = SplayTreeMap<int, double>.from(
+          match, (a, b) => match[a].compareTo(match[b]));
+
+      print(sortedMap.keys.toList());
+      print(sortedMap.values.toList());
+
+      List mat = sortedMap.keys.toList();
+
+      mat = mat.reversed.take(10).toList();
+
+      var m = jsonEncode(mat);
+
+      await connect_computer.execute(
+          'UPDATE users_compatible SET compat = @compat WHERE id = @id',
+          substitutionValues: {'compat': m, 'id': i});
+    }
   }
 
   @override
@@ -329,6 +424,8 @@ class _MyAppState extends State<MyApp> {
                 for (int k = 0; k < users.length; k++) {
                   response.add(await extractData(k));
                 }
+                await images_aimees();
+                await interets_communs();
                 await connect_computer.close();
                 print("finito");
 
