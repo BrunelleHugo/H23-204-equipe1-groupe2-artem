@@ -20,7 +20,7 @@ CREATE TABLE users_compatible (
     email TEXT,
     mdp TEXT,
     nom TEXT,
-    avatar TEXT,
+    avatar INT[],
     palette JSONB,
     oeuvres JSONB,
     aimees JSONB,

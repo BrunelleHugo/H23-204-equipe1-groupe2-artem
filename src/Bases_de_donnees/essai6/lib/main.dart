@@ -286,18 +286,20 @@ class _MyAppState extends State<MyApp> {
 
         print(m); */
 
+        final r1 = await http.get(Uri.parse(avatar));
+        final tuint = ((r1.statusCode == 200) ? r1.bodyBytes : null);
+
         final h = jsonEncode(compar);
         final li = jsonEncode(list);
 
         await connect_computer.execute(
-            'INSERT INTO users_compatible (id, email, mdp, nom, avatar, palette, oeuvres) VALUES (@id, @email, @mdp, @nom, @avatar, @palette, @oeuvres)',
+            'INSERT INTO users_compatible (id, email, mdp, nom, avatar, palette, oeuvres) VALUES (@id, @email, @mdp, @nom, ARRAY $tuint, @palette, @oeuvres)',
             substitutionValues: {
               'id': k,
               'email':
                   "${nom.toString().replaceAll(' ', '.').toLowerCase()}@gmail.com",
               'mdp': k.toString(),
               'nom': nom.toString(),
-              'avatar': avatar.toString(),
               'palette': h,
               'oeuvres': li,
               /* '{${hex[0]}, ${hex[1]}, ${hex[2]}, ${hex[3]}, ${hex[4]}}', */
