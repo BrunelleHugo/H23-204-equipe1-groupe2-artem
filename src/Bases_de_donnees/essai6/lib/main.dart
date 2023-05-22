@@ -323,9 +323,12 @@ class _MyAppState extends State<MyApp> {
 
     Map<List, double> toile = {};
 
-    for (int i = 0; i < palette.length; i++) {
+    var ild = await connect_computer.query('SELECT id FROM users_compatible');
+    var id = ild.map((row) => row[0]).toList();
+
+    for (int i in id) {
       toile.clear();
-      for (int j = 0; j < oeuvres.length; j++) {
+      for (int j in id) {
         if (j != i) {
           for (int l = 0; l < oeuvres[j].length; l++) {
             toile[oeuvres[j][l]] = (CompatibilityImage.total(
@@ -362,9 +365,12 @@ class _MyAppState extends State<MyApp> {
 
     Map<int, double> match = {};
 
-    for (int i = 0; i < palette.length; i++) {
+    var ild = await connect_computer.query('SELECT id FROM users_compatible');
+    var id = ild.map((row) => row[0]).toList();
+
+    for (int i in id) {
       match.clear();
-      for (int j = 0; j < palette.length; j++) {
+      for (int j in id) {
         if (j != i) {
           match[j] = (CompatibilityUsers.ensemble((palette[i]).toSet(),
               (palette[j]).toSet(), aimees[i], aimees[j]));
@@ -375,6 +381,7 @@ class _MyAppState extends State<MyApp> {
           match, (a, b) => match[a].compareTo(match[b]));
 
       print(sortedMap.keys.toList());
+
       print(sortedMap.values.toList());
 
       List mat = sortedMap.keys.toList();
