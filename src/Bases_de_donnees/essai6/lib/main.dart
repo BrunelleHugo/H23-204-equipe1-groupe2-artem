@@ -293,13 +293,15 @@ class _MyAppState extends State<MyApp> {
         final li = jsonEncode(list);
 
         await connect_computer.execute(
-            'INSERT INTO users_compatible (id, email, mdp, nom, avatar, palette, oeuvres) VALUES (@id, @email, @mdp, @nom, ARRAY $tuint, @palette, @oeuvres)',
+            'INSERT INTO users_compatible (id, email, mdp, nom, avatar, lien, palette, oeuvres) VALUES (@id, @email, @mdp, @nom, ARRAY $tuint, @lien, @palette, @oeuvres)',
             substitutionValues: {
               'id': k,
               'email':
                   "${nom.toString().replaceAll(' ', '.').toLowerCase()}@gmail.com",
               'mdp': k.toString(),
               'nom': nom.toString(),
+              'lien':
+                  'http://www.saatchiart.com/account/artworks/${users.elementAt(k)}',
               'palette': h,
               'oeuvres': li,
               /* '{${hex[0]}, ${hex[1]}, ${hex[2]}, ${hex[3]}, ${hex[4]}}', */
@@ -380,9 +382,9 @@ class _MyAppState extends State<MyApp> {
       var sortedMap = SplayTreeMap<int, double>.from(
           match, (a, b) => match[a].compareTo(match[b]));
 
-      print(sortedMap.keys.toList());
+      /* print(sortedMap.keys.toList());
 
-      print(sortedMap.values.toList());
+      print(sortedMap.values.toList()); */
 
       List mat = sortedMap.keys.toList();
 
