@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_artem/gallery.dart';
 import 'package:test_artem/inscription.dart';
 import 'package:test_artem/profil.dart';
 
@@ -69,7 +70,12 @@ class Connexion extends StatelessWidget {
               backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Gallery()),
+              );
+            },
             child: const Text(
               'Se connecter',
             ),

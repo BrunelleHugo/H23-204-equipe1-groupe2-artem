@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_artem/connexion.dart';
 import 'package:test_artem/inscription.dart';
+import 'package:test_artem/gallery.dart';
 
 final ThemeData myTheme = ThemeData( fontFamily: 'Oswald',
   primarySwatch: const MaterialColor(
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: myTheme,
 
-      home: const Connexion(),
+      home: Connexion(),
     );
   } 
 }
