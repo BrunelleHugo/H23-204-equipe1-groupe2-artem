@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS users_compatible;
-/* DROP TABLE IF EXISTS compa_inter;
+DROP TABLE IF EXISTS compa_inter;
 
-CREATE TABLE compa_inter (
+/* CREATE TABLE compa_inter (
     pers0 DECIMAL DEFAULT 0,
     pers1 DECIMAL DEFAULT 0,
     pers2 DECIMAL DEFAULT 0,
