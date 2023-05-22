@@ -21,6 +21,7 @@ CREATE TABLE users_compatible (
     mdp TEXT,
     nom TEXT,
     avatar INT[],
+    lien TEXT,
     palette JSONB,
     oeuvres JSONB,
     aimees JSONB,
