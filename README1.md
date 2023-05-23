@@ -36,4 +36,4 @@ Ce que l'application Artem peux offrir est une plateforme sur laquelle les utili
 ## Connaissances
 Nous savons maintenant comment utiliser une base de données, la connecter à un projet et mettre des données à l'intérieur. Nous avons de plus grandes connaissances sur les différentes manières de créer des algorithmes afin d'évaluer les intérêts communs entre les utilisateurs. Également, nous avons réussi à utiliser différentes applications tierces comme Unity afin de créer des modèles pour nos images ainsi que d'utiliser la réalité augmentée dans notre projet. Et pour finir, nous avons de meilleures connaissances sur le développement des applications et l'acquisition d'un nouveau langage de programmation.
 
-<img src="https://api.nga.gov/iiif/0049d6c0-be2c-4b34-a9d3-06829157d029/full/!1920,1800/0/default.jpg" alt="Italian Trulli">ç
+<img src="https://api.nga.gov/iiif/0049d6c0-be2c-4b34-a9d3-06829157d029/full/!1920,1800/0/default.jpg" alt="Italian Trulli">
