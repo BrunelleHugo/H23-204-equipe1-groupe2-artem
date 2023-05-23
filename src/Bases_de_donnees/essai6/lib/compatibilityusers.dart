@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 
 class CompatibilityUsers extends StatefulWidget {
   static double ensemble(Set p1, Set p2, List aim1, List aim2) {
+    // Calcul de la compatibilité entre les palettes de couleurs des
+    // utilisateurs
     double ort = CompatibilityImage.total(p1, p2);
 
     int counter = 0;
@@ -20,6 +22,9 @@ class CompatibilityUsers extends StatefulWidget {
       }
     }
 
+    // Si les utilisateurs ont des images aimées communes, cette équation permet
+    // d'augmenter leur niveau de compatibilité sans atteindre
+    // 100% de compatibilité
     ort = (100 - (100 - (ort * 100)) * pow((0.85), counter)) / 100;
 
     return ort;

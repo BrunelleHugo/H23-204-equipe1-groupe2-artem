@@ -23,6 +23,7 @@ import 'compatibilityusers.dart';
 
 import 'dart:convert';
 
+// Connexion à PostgreSQL
 final connect_computer = PostgreSQLConnection(
   '::1',
   5432,
@@ -34,7 +35,7 @@ final connect_computer = PostgreSQLConnection(
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await connect_computer.open();
+  await connect_computer.open(); // Ouverture de la connexion
 
   runApp(
     MaterialApp(
@@ -59,13 +60,9 @@ class _MyAppState extends State<MyApp> {
   PaletteGenerator _paletteGenerator;
 
   List<Color> colorPaletteUser;
-  //List<String> hex = [];
 
 // Strings to store the extracted Article titles
   String result1 = 'Result 1';
-
-  final String url =
-      'https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/51fidJPxdzL._AC_SX466_.jpg';
 
 // boolean to show CircularProgressIndication
 // while Web Scraping awaits
@@ -74,6 +71,7 @@ class _MyAppState extends State<MyApp> {
   Uint8List uint;
   File imageFile;
 
+// Liste des différents utilisateurs de SaatchiArt auxquelles nous allons prendre les données
   List<int> users = [
     236057,
     405418,
@@ -89,7 +87,9 @@ class _MyAppState extends State<MyApp> {
   ];
 
   Future<List> saveNetworkImageToFile(String imageUrl) async {
+    // Prise de données d'une image par un site internet
     final response = await http.get(Uri.parse(imageUrl));
+    // Conversion de l'image en Uint8List
     uint = ((response.statusCode == 200) ? response.bodyBytes : null);
 
     Image im = Image.memory(
@@ -98,45 +98,25 @@ class _MyAppState extends State<MyApp> {
     );
     ImageProvider imPro = im.image;
 
+    //Considère les cinq couleurs principales de l'image
     var paletteGenerator =
         await PaletteGenerator.fromImageProvider(imPro, maximumColorCount: 5);
     var colors = paletteGenerator.colors;
     var collist = [];
 
+    // Liste des cinq couleurs principales en RGB
     for (Color color in colors) {
       var red = color.red, green = color.green, blue = color.blue;
       collist.add([red, green, blue]);
     }
 
-    /* for (Color color in colors) {
-      var h = color.value.toRadixString(16);
-      hex.add(h);
-    } */
-
+    // Ajoute la couleur principale de chaque image à une liste associée à
+    // l'utilisateur
     var col = paletteGenerator.dominantColor.color;
     colorPaletteUser.add(col);
 
     return collist;
   }
-
-  /* Future<void> _myGeneratePalette(int counter) async {
-    Image im = Image(
-      image: AssetImage("images/chat1.jpg"),
-      height: 2048,
-      width: 2048,
-    );
-
-    ImageProvider imPro = im.image;
-
-    _paletteGenerator =
-        await PaletteGenerator.fromImageProvider(imPro, maximumColorCount: 5);
-
-    var colors = _paletteGenerator.colors;
-
-    for (Color col in colors) {
-      print(chalk.rgb(col.red, col.green, col.blue)("YES"));
-    }
-  } */
 
   Future<List<String>> extractData(int k) async {
     // Getting the response from the targeted url
@@ -149,7 +129,6 @@ class _MyAppState extends State<MyApp> {
     if (response.statusCode == 200) {
       // Getting the html document from the response
       var document = parser.parse(response.body);
-      int counter = 0;
       try {
         // Scraping the first article title
         var classlor = document
@@ -167,12 +146,8 @@ class _MyAppState extends State<MyApp> {
           }
         }
 
-        var res = await http.get(Uri.parse(avatar));
-
-        /* list.add(nom);
-        list.add(((res.statusCode == 200) ? res.bodyBytes : null)); */
-
         for (var h = 0; h < classlor.length; h++) {
+          // Cherche les informations précises une image à la fois
           var oeuvre, dimension, imageUrl;
           var case1 = classlor[h].children[0];
           var img = case1.getElementsByTagName("img");
@@ -193,38 +168,22 @@ class _MyAppState extends State<MyApp> {
             dimension ??= h41.text;
           }
 
+          // S'il s'agit d'une image, on rajoute l'image en fichier Uint8List,
+          // le nom de l'oeuvre, les 5 couleurs dominantes de l'image et les
+          // dimensions de l'oeuvre
           if (imageUrl != null) {
             if (imageUrl.startsWith(RegExp(r'^http.*\.(jpg|png|jpeg)'))) {
-              counter++;
-
-              //hex = [];
-
               var c5 = await saveNetworkImageToFile(imageUrl);
-
-              /* await connect_computer.execute(
-                  'INSERT INTO oeuvre (img, descrip, couleurs, dimensions) VALUES (ARRAY $uint, @descrip, ARRAY $c5, @dimensions)',
-                  substitutionValues: {
-                    'descrip': oeuvre.toString(),
-                    'dimensions': dimension
-                  }); */
-
-              //await _myGeneratePalette(counter);
-
-              //await _detectObjects();
-
-              /* list.add(counter); //nombre de l'image (1ere image = 0)
-              list.add(oeuvre); //description de l'image
-              list.add(imageUrl.toString()); //l'image
-              list.add(dimension); //dimensions de l'image */
               list.add([uint, oeuvre.toString(), c5, dimension]);
             }
           }
         }
 
         List c = colorPaletteUser;
-        String cc = "";
         List compar = [];
 
+        // Prend 5 couleurs de la liste des couleurs dominantes de chaque images
+        // de l'utilisateur
         List ind = [
           0,
           (c.length / 4).floor(),
@@ -235,63 +194,17 @@ class _MyAppState extends State<MyApp> {
 
         for (int j = 0; j < ind.length; j++) {
           compar.add([c[ind[j]].red, c[ind[j]].green, c[ind[j]].blue]);
-          /* compar.elementAt(j).add(c[ind[j]].green);
-          compar.elementAt(j).add(c[ind[j]].blue); */
         }
 
-        for (int i = 0; i < ind.length; i++) {
-          cc += (chalk.rgb(compar[i][0], compar[i][1], compar[i][2])("ff "));
-        }
-
-        print(cc);
-        print(c.length);
-
-        /* List lor = [
-          [0, 0, 0],
-          [0, 0, 1],
-          [0, 1, 0],
-          [1, 0, 0],
-          [0, 1, 1],
-        ];
-
-        List d = [];
-        var m = 0;
-
-        for (List x in compar) {
-          d = [];
-          for (List f in lor) {
-            int counter = 0;
-            for (int i = 0; i < f.length; i++) {
-              counter += (f[i] - x[i]).abs();
-            }
-            d.add(counter);
-          }
-          d.sort();
-          m += d[0];
-        }
-
-        String kad = "", kaf = "";
-
-        for (List vf in lor) {
-          kaf += (chalk.rgb(vf[0], vf[1], vf[2])("gg "));
-        }
-
-        print(kaf);
-
-        for (List vh in compar) {
-          kad += (chalk.rgb(vh[0], vh[1], vh[2])("gg "));
-        }
-
-        print(kad);
-
-        print(m); */
-
+        // Transformation d'une image web en fichier Uint8List
         final r1 = await http.get(Uri.parse(avatar));
         final tuint = ((r1.statusCode == 200) ? r1.bodyBytes : null);
 
+        // Encodage des listes en JSONB
         final h = jsonEncode(compar);
         final li = jsonEncode(list);
 
+        // Rajout des données dans le tableau de users_compatible
         await connect_computer.execute(
             'INSERT INTO users_compatible (id, email, mdp, nom, avatar, lien, palette, oeuvres) VALUES (@id, @email, @mdp, @nom, ARRAY $tuint, @lien, @palette, @oeuvres)',
             substitutionValues: {
@@ -304,8 +217,6 @@ class _MyAppState extends State<MyApp> {
                   'http://www.saatchiart.com/account/artworks/${users.elementAt(k)}',
               'palette': h,
               'oeuvres': li,
-              /* '{${hex[0]}, ${hex[1]}, ${hex[2]}, ${hex[3]}, ${hex[4]}}', */
-              /*'aimees': , */
             });
       } catch (Exception) {
         print(Exception.toString());
@@ -315,6 +226,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<List<String>> images_aimees() async {
+    // Sélection des oeuvres et des palettes de couleurs des utilisateurs et on
+    // la transforme en liste
     var o = await connect_computer
         .query('SELECT ALL oeuvres FROM users_compatible');
     var p = await connect_computer
@@ -325,6 +238,7 @@ class _MyAppState extends State<MyApp> {
 
     Map<List, double> toile = {};
 
+    // Liste des id dans l'ordre donné par le tableau
     var ild = await connect_computer.query('SELECT id FROM users_compatible');
     var id = ild.map((row) => row[0]).toList();
 
@@ -333,12 +247,17 @@ class _MyAppState extends State<MyApp> {
       for (int j in id) {
         if (j != i) {
           for (int l = 0; l < oeuvres[j].length; l++) {
+            // Ajout du calcul de compatibilité entre les oeuvres en fonction
+            // des palettes de couleurs des utilisateurs et des palettes de
+            // couleurs de l'image
             toile[oeuvres[j][l]] = (CompatibilityImage.total(
                 (palette[i]).toSet(), (oeuvres[j][l][2]).toSet()));
           }
         }
       }
 
+      // Mise en ordre de la liste pour avoir ceux ayant un niveau de
+      // compatibilité maximale en haut de la liste
       var sortedMap = SplayTreeMap<List, double>.from(
           toile, (a, b) => toile[a].compareTo(toile[b]));
 
@@ -346,9 +265,11 @@ class _MyAppState extends State<MyApp> {
       jasd.reversed;
 
       jasd = jasd.take(10).toList();
-
+      // Encodage de la liste des dix premières oeuvres de la liste ayant un
+      // grand niveau de compatibilité avec la palette de l'utilisateur
       var l = jsonEncode(jasd);
 
+      // Ajout de la liste encodées dans la colonne aimées à un id spécifique
       await connect_computer.execute(
           'UPDATE users_compatible SET aimees = @aimees WHERE id = @id',
           substitutionValues: {'aimees': l, 'id': i});
@@ -356,9 +277,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<List<String>> interets_communs() async {
+    // Sélection des palettes de couleurs et des images aimées de l'utilisateur
+    // et on la transforme en liste
     final p = await connect_computer
         .query('SELECT ALL palette FROM users_compatible');
-
     final a =
         await connect_computer.query('SELECT ALL aimees FROM users_compatible');
 
@@ -367,6 +289,7 @@ class _MyAppState extends State<MyApp> {
 
     Map<int, double> match = {};
 
+    // Liste des id dans l'ordre donné par le tableau
     var ild = await connect_computer.query('SELECT id FROM users_compatible');
     var id = ild.map((row) => row[0]).toList();
 
@@ -374,24 +297,26 @@ class _MyAppState extends State<MyApp> {
       match.clear();
       for (int j in id) {
         if (j != i) {
+          // Ajout du résultat au calcul de la compatibilité entre les
+          // utilisateurs
           match[j] = (CompatibilityUsers.ensemble((palette[i]).toSet(),
               (palette[j]).toSet(), aimees[i], aimees[j]));
         }
       }
 
+      // Mise en ordre de la liste pour avoir ceux ayant un niveau de
+      // compatibilité maximale en haut de la liste
       var sortedMap = SplayTreeMap<int, double>.from(
           match, (a, b) => match[a].compareTo(match[b]));
-
-      /* print(sortedMap.keys.toList());
-
-      print(sortedMap.values.toList()); */
 
       List mat = sortedMap.keys.toList();
 
       mat = mat.reversed.take(10).toList();
-
+      // Encodage de la liste des dix premiers utilisateurs de la liste ayant un
+      // grand niveau de compatibilité avec l'utilisateur
       var m = jsonEncode(mat);
 
+      // Ajout de la liste encodées dans la colonne aimées à un id spécifique
       await connect_computer.execute(
           'UPDATE users_compatible SET compat = @compat WHERE id = @id',
           substitutionValues: {'compat': m, 'id': i});

@@ -11,6 +11,7 @@ class CompatibilityImage extends StatefulWidget {
   final databaseRef = FirebaseDatabase.instance.reference();
 
   static double total(Set base, Set p2) {
+    // Liste des couleurs extrêmes (noir, bleu, vert, rouge, blanc)
     List lor = [
       [0, 0, 0],
       [0, 0, 255],
@@ -19,6 +20,9 @@ class CompatibilityImage extends StatefulWidget {
       [255, 255, 255],
     ];
 
+    // Ceci est un calcul du résultat maximal possible entre la palette de
+    // couleurs donnée par le premier utilisateur et la liste des
+    // couleurs extrêmes
     List d1 = [];
     var m1 = 0;
 
@@ -35,6 +39,9 @@ class CompatibilityImage extends StatefulWidget {
       m1 += d1[d1.length - 1];
     }
 
+    // Ceci est un calcul du résultat maximal possible entre la palette de
+    // couleurs donnée par le premier utilisateur et la palette de
+    // couleurs donnée par le deuxième utilisateur
     List d2 = [];
     var m2 = 0;
 
@@ -50,6 +57,9 @@ class CompatibilityImage extends StatefulWidget {
       d2.sort();
       m2 += d2[0];
     }
+
+    // Le résultat est calculé par le 1 absolu moins la division
+    // du résultat extrême
 
     double ort = 1 - (m2 / m1);
 
