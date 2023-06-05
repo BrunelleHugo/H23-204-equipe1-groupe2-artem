@@ -3,7 +3,8 @@ import 'package:test_artem/connexion.dart';
 import 'package:test_artem/inscription.dart';
 import 'package:test_artem/gallery.dart';
 
-final ThemeData myTheme = ThemeData( fontFamily: 'Oswald',
+final ThemeData myTheme = ThemeData(
+  fontFamily: 'Oswald',
   primarySwatch: const MaterialColor(
     0xFFDECEB4,
     <int, Color>{
@@ -33,10 +34,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: myTheme,
-
       home: Connexion(),
     );
-  } 
+  }
 }
 
 class RootPage extends StatefulWidget {
@@ -57,8 +57,6 @@ class _RootPageState extends State<RootPage> {
       //   title: Text('Connexion'),
       // ),
       body: pages[0],
-
-
 
       floatingActionButton: FloatingActionButton(
           onPressed: () {

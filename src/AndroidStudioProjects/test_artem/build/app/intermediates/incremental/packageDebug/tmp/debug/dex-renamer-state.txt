@@ -1,4 +1,4 @@
-#Mon May 22 12:03:20 EDT 2023
-base.0=C\:\\Users\\jessi\\StudioProjects\\H23-204-equipe1-groupe2-artem\\src\\AndroidStudioProjects\\test_artem\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Mon Jun 05 16:28:52 EDT 2023
+base.0=C\:\\Users\\chris\\Documents\\GitHub\\420-204-RE-projet-artem\\src\\AndroidStudioProjects\\test_artem\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex
